@@ -1,7 +1,7 @@
 // alu.sv
 // RISC-V ALU Module
-// Version: v1
-// Date: 21/11/22
+// Ver: 1.01
+// Date: 22/11/22
 
 module ALU #(parameter n = 32)(
     input logic [3:0] AluOp; //4 bit operation code
@@ -32,5 +32,5 @@ begin
         zflag = 1'b1; 
 end
 
-end module
+endmodule
 
