@@ -12,7 +12,10 @@ input logic [n-1:0] dataW,
 output logic [n-1:0] dataR
 );
 
-logic [n-1:0] mem [512:0]; //2MB of synchrnous RAM
+//logic [n-1:0] mem [511:0]; //2MB of synchrnous RAM
+//does this need to be 32 bits wide, 512 makes no sense with 32 bit data in the ALU
+//theres only 6 bits for addresses
+logic [n-1:0] mem [31:0]; //1kb - 128B
 
 always_ff @(posedge clock) 
 begin

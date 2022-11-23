@@ -1,13 +1,13 @@
 // alu.sv
 // RISC-V ALU Module
-// Ver: 1.01
-// Date: 22/11/22
+// Ver: 1.1
+// Date: 23/11/22
 
-module ALU #(parameter n = 32)(
-    input logic [3:0] AluOp; //4 bit operation code
-    input logic [n-1:0] A,B; //32 bit inputs
-    output logic [n-1:0] AluOut; //32 bit outputs
-    output logic zflag;
+module alu #(parameter n = 32)(
+    input logic [3:0] AluOp, //4 bit operation code
+    input logic [n-1:0] A, B, //32 bit inputs
+    output logic [n-1:0] AluOut, //32 bit outputs
+    output logic zflag
     //what flags are needed??
 );
 
@@ -33,4 +33,5 @@ begin
 end
 
 endmodule
+
 
