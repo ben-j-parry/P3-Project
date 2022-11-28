@@ -1,7 +1,7 @@
 // instrmem.sv
-// RISC-V program instructions Module
+// RISC-V  instruction memory Module
 // Ver: 1.0
-// Date: 22/11/22
+// Date: 25/11/22
 
 //is this the same as program memory
 
