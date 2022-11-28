@@ -5,7 +5,7 @@
 
 module registers #(parameter n = 32)(
  input logic clock,
- input logic regwrite, //write flag,
+ input logic regw, //write flag,
  input logic [n-1:0] wdata,
  input logic [5:0] regaddrW,
  input logic [5:0] regaddrR1, regaddrR2,
@@ -22,7 +22,7 @@ end
 
 always_ff @ (posedge clk) //handles the writing
 begin
-    if (regwrite) //if the write flag is high
+    if (regw) //if the write flag is high
         reg[regaddrW] <= wdata; //writes wdata to register at regaddrW
 end
 
