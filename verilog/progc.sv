@@ -13,7 +13,7 @@
 
 module progc #(parameter nInstr = 7)(
     input logic clock, reset, incr, //brnch, jmp, jmplr
-    input logic [instrn-1:0] Branchaddr,
+    //input logic [instrn-1:0] Branchaddr,
     output logic [instrn-1:0] progcOut
 );
 

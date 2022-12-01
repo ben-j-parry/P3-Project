@@ -7,7 +7,8 @@ module decoder (
     input logic [31:0] instr,
     output logic [3:0] AluOp,
     output logic regw,
-    output logic incr
+    output logic incr,
+    output logic imm
 )
 
 logic [6:0] opcode;
@@ -20,6 +21,7 @@ begin
 
     AluOp = 4'd0; //initial values
     regw = 1'b0; 
+    imm = 1'b0;
 
     opcode = instr[6:0]; //opcode is the first 7 bits of the instr
 
@@ -34,6 +36,13 @@ begin
         7'b0000011 : begin //I instruction - loads only
         funct3 = instr[14:12];
 
+        end
+        7'b0010011:begin //I instruction - immediates only
+        funct3 = instr[14:12];
+        //alu operations need to be added
+        
+        imm = 1'b1;
+        regw = 1'b1;
         end
         7'b0100011 : begin //S instruction
         funct3 = instr[14:12];

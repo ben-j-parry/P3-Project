@@ -1,12 +1,13 @@
 // branchgen.sv
 // RISC-V Branch Signal Generation Module
-// Ver: 1.1
+//not included in v1 of CPU
+// Ver: 2.1
 // Date: 28/11/22
 
 module branchgen #(parameter n = 32)(
     input logic [n-1:0] A, B,
     //output logic flags [3:0]
-    output logic flags [1:0];
+    output logic flags [1:0]
 );
 
 always_comb

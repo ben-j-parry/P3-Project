@@ -1,6 +1,7 @@
 // ram.sv
 // RISC-V synchronous ram Module
-// Ver: 1.2
+//not included in v1 of CPU
+// Ver: 2.2
 // Date: 28/11/22
 
 //should this module be using the SDRAM on the fpga?
