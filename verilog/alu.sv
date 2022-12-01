@@ -17,12 +17,12 @@ begin
     AluOut = A;
 
     case(AluOp) 
-    4'd0: AluOut = A + B; //ADD
-    4'd1: AluOut = A + (~B + 1); //SUB
+    4'b0000: AluOut = A + B; //ADD
+    4'b0001: AluOut = A + (~B + 1); //SUB
     //ALU operations
     //...
-    4'd9: AluOut = A | B; //OR
-    4'd10: AluOut = A & B; //AND
+    4'b1100: AluOut = A | B; //OR
+    4'b1110: AluOut = A & B; //AND
     
     default: AluOut = 0;
     endcase

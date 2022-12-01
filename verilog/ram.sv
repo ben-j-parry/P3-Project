@@ -2,7 +2,7 @@
 // RISC-V synchronous ram Module
 //not included in v1 of CPU
 // Ver: 2.2
-// Date: 28/11/22
+// Date: 1/12/22
 
 //should this module be using the SDRAM on the fpga?
 module ram(#parameter n = 32)(
@@ -19,7 +19,7 @@ output logic [n-1:0] dataR
 // however this would take 19 address bits to realise so have can only use 17 which is 131072
 //this allows for 524,288 bytes of memory
 //logic [n-1:0] mem [131071:0]; //2^17 is 131072
-logic [n-1:0] mem [(1<<17)-1:0] //1<<17 is the same as 2^17
+logic [n-1:0] mem [(1<<17)-1:0]; //1<<17 is the same as 2^17
 
 
 always_ff @(posedge clock) 
@@ -30,4 +30,5 @@ begin
     if (ramR) //if memread is enabled the data is written from ram
         dataR <= mem[addr];
 end
+
 endmodule
