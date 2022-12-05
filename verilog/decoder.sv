@@ -1,7 +1,7 @@
 // decoder.sv
 // RISC-V Decoder Module
-// Ver: 1.1
-// Date: 1/12/22
+// Ver: 1.2
+// Date: 05/12/22
 `include "opcodes.sv"
 
 module decoder (
@@ -29,7 +29,7 @@ begin
  //   opcode = instr[6:0]; //opcode is the first 7 bits of the instr
 
     case (opcode)
-//      R Instructions
+        //      R Instructions
 /////////////////////////////////////////////////////////////////
         `RALU : begin 
 
@@ -37,18 +37,13 @@ begin
         regw = 1'b1;
 
         end
-//      I Instructions - Loads Only
-/////////////////////////////////////////////////////////////////
-        `ILOAD : begin 
-            //this needs to be 2 clock cycles
-        end
-//      I Instructions - Immediates Only
+        //      I Instructions - Immediates Only
 /////////////////////////////////////////////////////////////////
         `IALU: begin 
 
         if (funct3 == 3'b101) //srli or srai 
         begin 
-            funct7 = instr[31:25];
+            //funct7 = instr[31:25];
 
             AluOp = {funct3, funct7[5]};
         end
@@ -60,7 +55,13 @@ begin
         imm = 1'b1;
         regw = 1'b1;
         end
-//      S Instructions
+        //      I Instructions - Loads Only
+        //      LOAD And STORE are not included in V1
+/////////////////////////////////////////////////////////////////
+        `ILOAD : begin 
+            //this needs to be 2 clock cycles
+        end
+        //      S Instructions - Store
 /////////////////////////////////////////////////////////////////
         `SSTORE : begin 
         

@@ -1,7 +1,7 @@
 // cpu.sv
 // RISC-V CPU top level Module
-// Ver: 1.0
-// Date: 30/11/22
+// Ver: 1.1
+// Date: 05/12/22
 
 module cpu#(parameter n = 32)(
     input logic clock,
@@ -10,50 +10,49 @@ module cpu#(parameter n = 32)(
 )
 
 //Inputs and Outputs
+/////////////////////////////////////////////////////////////////
 //ALU 
 logic [3:0] AluOp;
 logic imm;
-logic [n-1:0] ALUimm; //ALU input mux
-
+logic [n-1:0] AluB; //ouput from the imm mux
+/////////////////////////////////////////////////////////////////
 //Registers
-logic [n-1:0] regdataR1, regdataR2, wdata;
+logic [n-1:0] dR1, dR2, wdata;
 logic regw;
-
+/////////////////////////////////////////////////////////////////
 //Program Counter
-parameter nInstr = 7;
+parameter alen = 6; //address length
 logic clock, reset, incr;
-logic [instrn-1:0] progcOut;
-
+logic [alen-1:0] pcOut;
+/////////////////////////////////////////////////////////////////
 //Instruction Memory
-parameter ilen = n;
-logic [instrn-1:0] addr;
+parameter ilen = n; //instruction length
+logic [alen-1:0] addr;
 logic [ilen:0] instr;
+/////////////////////////////////////////////////////////////////
 
 //module instantiations
 
-progc #(.nInstr(nInstr)) programCounter (.clock(clock), .reset(reset),.incr(incr),
-                                         .progcOut(addr));
+progc #(.alen(alen)) programCounter (.clock(clock), .reset(reset),.incr(incr),
+                                         .pcOut(addr));
 
-imem #(.instrn(nInstr), .ilen(ilen)) instructionMem  (.addr(addr), .instr(instr));
+imem #(.alen(alen), .ilen(ilen)) instructionMem  (.addr(addr), .instr(instr));
 
 registers #(.n(n)) regs (.clock(clock), .regw(regw), .wdata(wdata), 
-                         .regaddrW(),.regaddrR1(), .regaddrR2(), //this must be populated with the correct bits of instr
-                         .regdataR1(regdataR1), .regdataR2(regdataR2));
+                         .waddr(instr[11:7]), .rR1(instr[19:15]), .rR2(isntr[24:20]), //rd, rs1 and rs2 respectively
+                         .dR1(dR1), .dR2(dR2));
 
-alu #(.n(n)) ALUO (.AluOp(AluOp), .A(regdataR1), .B(regdataR2),
+alu #(.n(n)) ALUO (.AluOp(AluOp), .A(dR1), .B(AluB),
                    .AluOut(wdata));
 
 //control module
-decoder Control (.instr[I], .AluOp(AluOp), .regw(regw),
+decoder Control (.opcode(instr[6:0]), .funct3(instr[14:12]), .funct7(instr[31:25]), .AluOp(AluOp), .regw(regw),
                  .incr(incr), .imm(imm));
 
-always_comb 
-begin
     //MUX for immediate operand
-    ALUimm = (imm ? instr[31:12] : regdataR2); //the brackets must contain the bits for the immediate value
+    //This is correct for Iformat
+   assign AluB = (imm ? instr[31:20] : dR2); //the brackets must contain the bits for the immediate value
 
-    outport = wdata;
-
-end
+   assign outport = wdata;
 
 endmodule

@@ -11,18 +11,18 @@
 //i have chosen 7 as this is the width of the opcode
 //not sure where else this comes from
 
-module progc #(parameter nInstr = 7)(
+module progc #(parameter alen = 6)(
     input logic clock, reset, incr, //brnch, jmp, jmplr
     //input logic [instrn-1:0] Branchaddr,
-    output logic [instrn-1:0] progcOut
+    output logic [alen-1:0] pcOut
 );
 
 always_ff @(posedge clock or posedge reset) 
 begin
     if (reset)
-        progcOut <= {nInstr{1'b0}} //reset the counter
+        pcOut <= {nInstr{1'b0}} //reset the counter
     else if (incr) // increment the pc
-        progcOut <= progcOut + 3'b4; //increment adds 4 as this is because a risc-v instruction is 32 bits
+        pcOut <= pcOut + 3'b4; //increment adds 4 as this is because a risc-v instruction is 32 bits
 end
 
 endmodule
