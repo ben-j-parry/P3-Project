@@ -5,7 +5,7 @@
 
 module alu #(parameter n = 32)(
     input logic [3:0] AluOp, //4 bit operation code
-    input logic [n-1:0] A, A, //32 bit inputs
+    input logic [n-1:0] A, B, //32 bit inputs
     output logic [n-1:0] AluOut //32 bit outputs
 );
 

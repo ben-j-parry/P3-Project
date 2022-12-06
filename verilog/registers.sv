@@ -1,4 +1,4 @@
-// alu.sv
+// registers.sv
 // RISC-V registers Module
 // Ver: 1.0
 // Date: 22/11/22
@@ -12,18 +12,18 @@ module registers #(parameter n = 32)(
  output logic [n-1:0] dR1, dR2
 ); 
 
-logic [n-1:0] reg [31:0]; //32 32-bit registers
+logic [n-1:0] regs [31:0]; //32 32-bit registers
 
 always_comb
 begin //assigns 
-    dR1 = reg[rR1];
-    dR2 = reg[rR2];
+    dR1 = regs[rR1];
+    dR2 = regs[rR2];
 end
 
-always_ff @ (posedge clk) //handles the writing
+always_ff @ (posedge clock) //handles the writing
 begin
     if (regw) //if the write flag is high
-        reg[waddr] <= wdata; //writes wdata to register at regaddrW
+        regs[waddr] <= wdata; //writes wdata to register at regaddrW
 end
 
 
