@@ -17,7 +17,7 @@ logic [n-1:0] regs [31:0]; //32 32-bit registers
 
 always_comb
 begin //assigns 
-	if (rR1==5'd0)
+	if (rR1==5'd0) //set output of regs to 0 if r0 is the address
 		dR1 = {n{1'b0}};
 	else
     		dR1 = regs[rR1];

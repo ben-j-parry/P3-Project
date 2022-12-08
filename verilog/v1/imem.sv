@@ -13,7 +13,7 @@ output logic [ilen-1:0] instr
 
 logic [ilen:0] iReg [(1<<alen)-1:0];
 
-initial
+initial //read program file
 	$readmemh("prog.hex",iReg);
 
 //assign current instruction

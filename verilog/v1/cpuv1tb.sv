@@ -21,7 +21,7 @@ end
 
 initial 
 begin
-
+//reset the cpu 
 reset = 1'b1;
 
 #20ns reset = 1'b0;
