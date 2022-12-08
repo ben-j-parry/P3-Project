@@ -38,7 +38,7 @@ progc #(.alen(alen)) programCounter (.clock(clock), .reset(reset),.incr(incr),
 
 imem #(.alen(alen), .ilen(ilen)) instructionMem  (.addr(addr), .instr(instr));
 
-registers #(.n(n)) regs (.clock(clock), .reset(reset), .regw(regw), .wdata(wdata), 
+registers #(.n(n)) regs (.clock(clock), .regw(regw), .wdata(wdata), 
                          .waddr(instr[11:7]), .rR1(instr[19:15]), .rR2(instr[24:20]), //rd, rs1 and rs2 respectively
                          .dR1(dR1), .dR2(dR2));
 

@@ -5,7 +5,7 @@
 
 module registers #(parameter n = 32)(
  input logic clock,
- input logic reset,
+ //input logic reset,
  input logic regw, //write flag,
  input logic [n-1:0] wdata,
  input logic [4:0] waddr,
@@ -17,15 +17,21 @@ logic [n-1:0] regs [31:0]; //32 32-bit registers
 
 always_comb
 begin //assigns 
-    dR1 = regs[rR1];
-    dR2 = regs[rR2];
+	if (rR1==5'd0)
+		dR1 = {n{1'b0}};
+	else
+    		dR1 = regs[rR1];
+
+	if (rR2==5'd0)
+		dR2 = {n{1'b0}};
+	else
+	       dR2 = regs[rR2];
 end
 
-always_ff @ (posedge clock or posedge reset) //handles the writing
+always_ff @ (posedge clock) //handles the writing
 begin
-    if(reset)
-	regs = {default:0};
-    else if (regw) //if the write flag is high
+    //no reset here
+    if (regw) //if the write flag is high
         regs[waddr] <= wdata; //writes wdata to register at regaddrW
 end
 
