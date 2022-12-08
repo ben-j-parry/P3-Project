@@ -21,8 +21,10 @@ end
 
 initial 
 begin
+
 reset = 1'b1;
-reset = 1'b0;
+
+#20ns reset = 1'b0;
 
 end
 
