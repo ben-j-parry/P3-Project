@@ -1,38 +1,35 @@
 // branchgen.sv
 // RISC-V Branch Signal Generation Module
-//not included in v1 of CPU
-// Ver: 2.1
-// Date: 28/11/22
+// 
+// Ver: 2.2
+// Date: 31/01/23
 
 module branchgen #(parameter n = 32)(
     input logic [n-1:0] A, B,
-    //output logic flags [3:0]
-    output logic flags [1:0]
-);
+    input logic [2:0] brfunc;
+    output logic brnch
+    );
 
 always_comb
 begin
-    flags = {4{1'b0}};
 
-// if A==B is true this can be beq if its false it can be bne
-// this can be used for A>=B in the same way
-    if (A == B) 
-        flag[0] = 1'b1; //beq
-    else
-        flag[0] = 1'b0; //bne
+    brnch = 1'b0;
 
-    if (A >= B)
-        flag[1] = 1'b1; //bge
-    else
-        flag[1] = 1'b0; //ble
-  
+    case (brfunc)
+   //might need more begin and ends
+        3'b000:
+            if (A == B) 
+                brnch = 1'b1; //beq
+        3'b001:
+            if (A != B) 
+                brnch = 1'b1; //beq
+        3'b100, 3'b110: //for both signed and unsigned
+            if (A < B) 
+                brnch = 1'b1; //beq
+        3'b101, 3'b111:
+            if (A >= B) 
+                brnch = 1'b1; //beq
+        default: brnch = 1'b0;
+    endcase 
 end
 endmodule
-
-/*
-    if (A < B)
-        flag[2] = 1'b1; //ble
-    
-    if (A != B)
-        flag[3] = 1'b1; //bne
-*/

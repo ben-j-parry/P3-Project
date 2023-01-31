@@ -1,22 +1,19 @@
 // decoder.sv
 // RISC-V Decoder Module
-// Ver: 1.2
-// Date: 05/12/22
+// Ver: 2.0
+// Date: 31/01/23
 `include "opcodes.sv"
 
 module decoder (
     input logic [6:0] opcode,
     input logic [6:0] funct7,
     input logic [2:0] funct3,
- //   input logic [31:0] instr, /can replace with the bits for opcode, funct3 and funct7
     output logic [3:0] AluOp,
     output logic regw,
     output logic incr,
     output logic imm
 );
 
-        //funct3 = instr[14:12];
-        //funct7 = instr[31:25];
 
 always_comb
 begin
@@ -42,18 +39,11 @@ begin
         `IALU: begin 
 
         if (funct3 == 3'b101) //srli or srai 
-        begin 
-            //funct7 = instr[31:25];
-
             AluOp = {funct3, funct7[5]};
-        end
-        else
-        begin //the rest of the ALU operations
+        else //the rest of the ALU operations
             AluOp = {funct3, 1'b0};
-        end
-        
-        imm = 1'b1;
-        regw = 1'b1;
+            imm = 1'b1;
+            regw = 1'b1;
         end
         //      I Instructions - Loads Only
         //      LOAD And STORE are not included in V1
@@ -65,6 +55,12 @@ begin
 /////////////////////////////////////////////////////////////////
         `SSTORE : begin 
         
+        end
+        //     SB Instructions - Branches
+/////////////////////////////////////////////////////////////////
+        `SBBRANCH: begin
+            //branch gen will be based on the funct 3 
+            
         end
 /////////////////////////////////////////////////////////////////
         default: begin

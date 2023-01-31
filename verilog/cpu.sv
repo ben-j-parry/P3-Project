@@ -1,7 +1,7 @@
 // cpu.sv
 // RISC-V CPU top level Module
-// Ver: 1.1
-// Date: 05/12/22
+// Ver: 2.0
+// Date: 31/01/23
 
 module cpu#(parameter n = 32)(
     input logic clock,
@@ -21,19 +21,24 @@ logic [n-1:0] dR1, dR2, wdata;
 logic regw;
 /////////////////////////////////////////////////////////////////
 //Program Counter
-parameter alen = 6; //address length
 logic incr;
-logic [alen-1:0] pcOut;
 /////////////////////////////////////////////////////////////////
 //Instruction Memory
 parameter ilen = n; //instruction length
+parameter alen = 6; //address length
+
 logic [alen-1:0] addr;
 logic [ilen-1:0] instr;
 /////////////////////////////////////////////////////////////////
+//Branch Target Generator
+logic brnch;
+logic [12:0] brimm; //13 bit branch immediate
 
+ assign brimm = {instr[31], instr[7], instr[30:25], imm[11:8], 1'b0}; //1 is always at the end, always a multiple of 2
+/////////////////////////////////////////////////////////////////
 //module instantiations
 
-progc #(.alen(alen)) programCounter (.clock(clock), .reset(reset),.incr(incr),
+progc #(.n(n)) programCounter (.clock(clock), .reset(reset),.incr(incr), .brnch(brnch), .brtarg(brimm)
                                          .pcOut(addr));
 
 imem #(.alen(alen), .ilen(ilen)) instructionMem  (.addr(addr), .instr(instr));
@@ -48,6 +53,8 @@ alu #(.n(n)) ALUO (.AluOp(AluOp), .A(dR1), .B(AluB),
 //control module
 decoder Control (.opcode(instr[6:0]), .funct3(instr[14:12]), .funct7(instr[31:25]), .AluOp(AluOp), .regw(regw),
                  .incr(incr), .imm(imm));
+
+branchgen #(.n(n)) branches (.A(dR1), .B(dR2), .brfunc(instr[14:12]), .brnch(brnch));
 
     //MUX for immediate operand
     //This is correct for Iformat
