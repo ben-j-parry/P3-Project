@@ -12,24 +12,44 @@
 
 module progc #(parameter n = 32)(
     input logic clock, reset, incr, brnch, //brnch, jmp, jmplr
+    input logic [1:0] pcsel,
     input logic [12:0] brtarg, //branch target
-    output logic [alen-1:0] pcOut
+    output logic [n-1:0] pcOut,
+    output logic 
 );
+always_comb
+begin
+    case (pcsel)
+        2'b00: begin //incr
+        //next val = pc + 1
+        end
+        2'b01: begin //branch
+        //next val = pc + branch target
+        end
+        2'b10: begin //jump
+        //next val = pc + imm*2
+        end
+        2'b11: begin //jump r
+        //next val = rs1 + imm*2
+        end
+        default:
+    endcase
+end
 
 always_ff @(posedge clock or posedge reset) 
 begin
     if (reset)
-        pcOut <= {alen{1'b0}}; //reset the counter
+        pcOut <= {n{1'b0}}; //reset the counter
     else if (incr) // increment the pc
-        pcOut <= pcOut + {(alen-1){1,b0}, 1'b1}; //parameterised
+        pcOut <= pcOut + {(n-1){1,b0}, 1'b1}; //parameterised
 	    //pcOut <= pcOut + 6'b000001;
     else if (brnch)
         pcOut<= pcOut + brtarg;
-
-//must be 000100 as alen is 6. this will change as alen gets bigger
-//pcOut <= pcOut + {(alen-3){1'b0}, 3'b100};
-        //pcOut <= pcOut + 6'b000100; //increment adds 4 as this is because a risc-v instruction is 32 bits
-
+    //else if (brnch && incr)
+        //pcOut<= pcOut + brtarg;
+        //if this doesnt work switch the order of incr and brnch
 end
+
+//need to turn off incr if brnch is 1
 
 endmodule

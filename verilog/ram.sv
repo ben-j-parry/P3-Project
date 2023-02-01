@@ -21,7 +21,6 @@ output logic [n-1:0] dataR
 //logic [n-1:0] mem [131071:0]; //2^17 is 131072
 logic [n-1:0] mem [(1<<17)-1:0]; //1<<17 is the same as 2^17
 
-
 always_ff @(posedge clock) 
 begin
     if (ramW) //if memwrite is enabled the data is written to ram
