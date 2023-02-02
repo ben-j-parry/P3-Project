@@ -36,12 +36,17 @@ logic [ilen-1:0] instr;
 //Branch Target Generator
 logic brnch;
 logic [12:0] brimm; //13 bit branch immediate
+//Jump Target Gen
+logic [20:0] jaltimm;
 
  //assign brimm = {instr[31], instr[7], instr[30:25], imm[11:8], 1'b0}; //0 is always at the end, always a multiple of 2
 /////////////////////////////////////////////////////////////////
 //module instantiations
 
-progc #(.n(n)) programCounter (.clock(clock), .reset(reset),.incr(incr), .brnch(brnch), .brtarg(brimm)
+//progc #(.n(n)) programCounter (.clock(clock), .reset(reset),.incr(incr), .brnch(brnch), .brtarg(brimm)
+                             //            .pcOut(addr));
+
+progc #(.n(n)) programCounter (.clock(clock), .reset(reset), .pcsel(), .brtarg(brimm), jmptarg(jaltimm),
                                          .pcOut(addr));
 
 imem #(.alen(alen), .ilen(ilen)) instructionMem  (.addr(addr), .instr(instr));
@@ -68,7 +73,10 @@ decoder Control (.opcode(instr[6:0]), .funct3(instr[14:12]), .funct7(instr[31:25
 
    always_comb
    begin
+    //calculates the branch target for SB branches
     brimm = {instr[31], instr[7], instr[30:25], imm[11:8], 1'b0}; //0 is always at the end, always a multiple of 2
+    //calculates jump target for UJ jump (jal)
+    jaltimm = {instr[31], instr[21:12], instr[22], instr[30:23], 1'b0};//
 
         if (imm)
         begin 
