@@ -1,10 +1,11 @@
 // decoder.sv
 // RISC-V Decoder Module
-// Ver: 1.2
-// Date: 05/12/22
+// Ver: 3.1
+// Date: 07/02/23
 `include "opcodes.sv"
 
 module decoder (
+    input logic clock,
     input logic [6:0] opcode,
     input logic [6:0] funct7,
     input logic [2:0] funct3,
@@ -13,6 +14,8 @@ module decoder (
     output logic regw,
     output logic incr,
     output logic imm,
+    output logic writesel, //needs to be 2 bits for the jumps
+    output logic ramR,
     output logic shifti
 );
 
@@ -21,12 +24,14 @@ module decoder (
 
 always_comb
 begin
-    incr = 1'b1; //increments by default
-
+ //increments by default
+	incr = 1'b1;
     AluOp = 4'd0; //initial values
     regw = 1'b0; 
     imm = 1'b0;
-
+    ramR = 1'b0;
+    shifti = 1'b0;
+    writesel = 1'b0;
  //   opcode = instr[6:0]; //opcode is the first 7 bits of the instr
 
     case (opcode)
@@ -36,7 +41,7 @@ begin
 
         AluOp = {funct3, funct7[5]}; //concatenates funct3 and funct7[5] to create AluOp
         regw = 1'b1;
-
+        writesel = 1'b0; //write from the ALU
         end
         //      I Instructions - Immediates Only
 /////////////////////////////////////////////////////////////////
@@ -54,12 +59,21 @@ begin
         
         imm = 1'b1;
         regw = 1'b1;
+        writesel = 1'b0; //write from the ALU / not completely necessary
         end
         //      I Instructions - Loads Only
         //      LOAD And STORE are not included in V1
 /////////////////////////////////////////////////////////////////
         `ILOAD : begin 
             //this needs to be 2 clock cycles
+            //funct3 is used to decide which load is used
+            imm = 1'b1;
+            AluOp = 4'b0000; //not completely necessary
+            writesel = 1'b1; //write from the RAM
+            ramR = 1'b1; 
+	    regw = 1'b1;
+
+	
         end
         //      S Instructions - Store
 /////////////////////////////////////////////////////////////////
@@ -74,4 +88,5 @@ begin
 
 
 end
+
 endmodule
