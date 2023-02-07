@@ -1,7 +1,7 @@
-// cpuv3tb.sv
-// RISC-V CPU v3 Test Bench Module
+// alutestb.sv
+// RISC-V CPU v1 Test Bench Module
 // Ver: 1.0
-// Date: 07/02/23
+// Date: 06/12/22
 
 module cputestb;
 parameter n = 32;

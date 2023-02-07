@@ -23,7 +23,9 @@ logic [n-1:0] mem [(1<<5)-1:0]; //1<<17 is the same as 2^17
 //tests only
 always_comb
 begin	
- mem[5] = 32'd15;
+ //mem[5] = 32'd15;
+ mem[6] = 32'b11110100001001000000;
+ //mem[7] = 32'b11111001110001110000000000000000;
 end	
 
 

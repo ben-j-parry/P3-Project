@@ -1,7 +1,7 @@
 // cpu.sv
 // RISC-V CPU top level Module
-// Ver: 3.1
-// Date: 07/02/23
+// Ver: 3.0
+// Date: 02/02/23
 
 module cpu #(parameter n = 32) (
     input logic clock,
@@ -66,20 +66,20 @@ decoder Control (.clock(clock), .opcode(instr[6:0]), .funct3(instr[14:12]), .fun
     begin
         //calculates the branch target for SB branches
         //brimm = {instr[31], instr[7], instr[30:25], imm[11:8], 1'b0}; //0 is always at the end, always a multiple of 2
-	    if (ramR)
-	    begin	
-		    AluA = instr[19:15];
-	    end
-	    else
-	    begin
-		    AluA = dR1;
-	    end
+
+	//AluA Mux
+	case(ramR)
+	   1'b0: AluA = dR1;
+	   1'b1: AluA = instr[19:15];
+	   default: AluA = dR1;
+	endcase
+	
+	//AluB Mux
         //MUX for immediate operand 
-        //immediate shifts use shamt
         if (imm) //if imm is active either use full imm or 5 bit imm depending on if shift is used
         begin 
 
-            if (shifti) begin
+            if (shifti) begin         //immediate shifts use shamt which is only 5 bits
                 AluB = instr[24:20]; //imm shift format
             end
             else begin
@@ -91,13 +91,31 @@ decoder Control (.clock(clock), .opcode(instr[6:0]), .funct3(instr[14:12]), .fun
 
             AluB = dR2; //for the non shift immediate operations
         end
-        outport = AluOutput;
-
+        
         case (writesel)
-        1'b0: regwdata = AluOutput; //write to regs from alu output
-        1'b1: regwdata = ramROut; //write to regs from ram output
-        default: regwdata = AluOutput; 
+           1'b0: regwdata = AluOutput; //write to regs from alu output
+           1'b1: begin
+
+		//regwdata = ramROut; //write to regs from ram output
+
+                //funct3 Load Mux
+		case(instr[14:12]) 
+		//sign extension
+	           3'b000: regwdata = {{24{ramROut[7]}}, ramROut[7:0]};   //lb - Load Byte
+	           3'b001: regwdata = {{16{ramROut[15]}}, ramROut[15:0]};     //lh -  Load Halfword
+	   	   3'b010: regwdata = ramROut; //lw - Load Word
+		//no sign extension
+	   	   3'b100: regwdata = {24'b0, ramROut[7:0]};	 //lbu -  Load Byte Unsigned
+	   	   3'b101: regwdata = {16'b0, ramROut[15:0]};	//lhu - Load Halfword Unsigned
+		   default: regwdata = ramROut;
+		 endcase
+	   end
+           default: regwdata = AluOutput; 
         endcase
+
+	
+
+	outport = AluOutput;
 
     end
 

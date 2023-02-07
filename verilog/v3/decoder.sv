@@ -1,7 +1,7 @@
 // decoder.sv
 // RISC-V Decoder Module
-// Ver: 3.1
-// Date: 07/02/23
+// Ver: 3.0
+// Date: 03/02/23
 `include "opcodes.sv"
 
 module decoder (
@@ -19,20 +19,16 @@ module decoder (
     output logic shifti
 );
 
-        //funct3 = instr[14:12];
-        //funct7 = instr[31:25];
-
 always_comb
 begin
- //increments by default
-	incr = 1'b1;
+   incr = 1'b1; //increments by default
+
     AluOp = 4'd0; //initial values
     regw = 1'b0; 
     imm = 1'b0;
     ramR = 1'b0;
     shifti = 1'b0;
     writesel = 1'b0;
- //   opcode = instr[6:0]; //opcode is the first 7 bits of the instr
 
     case (opcode)
         //      R Instructions
@@ -66,6 +62,8 @@ begin
 /////////////////////////////////////////////////////////////////
         `ILOAD : begin 
             //this needs to be 2 clock cycles
+		
+	
             //funct3 is used to decide which load is used
             imm = 1'b1;
             AluOp = 4'b0000; //not completely necessary
@@ -73,7 +71,6 @@ begin
             ramR = 1'b1; 
 	    regw = 1'b1;
 
-	
         end
         //      S Instructions - Store
 /////////////////////////////////////////////////////////////////
@@ -85,7 +82,6 @@ begin
             $error("opcode error %h", opcode);
         end
     endcase
-
 
 end
 
