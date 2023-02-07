@@ -96,24 +96,23 @@ decoder Control (.clock(clock), .opcode(instr[6:0]), .funct3(instr[14:12]), .fun
            1'b0: regwdata = AluOutput; //write to regs from alu output
            1'b1: begin
 
-		//regwdata = ramROut; //write to regs from ram output
+		    //regwdata = ramROut; //write to regs from ram output
 
-                //funct3 Load Mux
-		case(instr[14:12]) 
-		//sign extension
-	           3'b000: regwdata = {{24{ramROut[7]}}, ramROut[7:0]};   //lb - Load Byte
-	           3'b001: regwdata = {{16{ramROut[15]}}, ramROut[15:0]};     //lh -  Load Halfword
-	   	   3'b010: regwdata = ramROut; //lw - Load Word
-		//no sign extension
-	   	   3'b100: regwdata = {24'b0, ramROut[7:0]};	 //lbu -  Load Byte Unsigned
-	   	   3'b101: regwdata = {16'b0, ramROut[15:0]};	//lhu - Load Halfword Unsigned
-		   default: regwdata = ramROut;
-		 endcase
-	   end
-           default: regwdata = AluOutput; 
+             //funct3 Load Mux
+		      
+            case(instr[14:12]) 
+		        //sign extension
+	            3'b000: regwdata = {{24{ramROut[7]}}, ramROut[7:0]};   //lb - Load Byte
+	            3'b001: regwdata = {{16{ramROut[15]}}, ramROut[15:0]};     //lh -  Load Halfword
+	   	        3'b010: regwdata = ramROut; //lw - Load Word
+		        //no sign extension
+	   	        3'b100: regwdata = {24'b0, ramROut[7:0]};	 //lbu -  Load Byte Unsigned
+	   	        3'b101: regwdata = {16'b0, ramROut[15:0]};	//lhu - Load Halfword Unsigned
+		        default: regwdata = ramROut;
+		    endcase
+	        end
+            default: regwdata = AluOutput; 
         endcase
-
-	
 
 	outport = AluOutput;
 
