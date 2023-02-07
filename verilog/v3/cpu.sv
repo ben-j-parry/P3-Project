@@ -1,7 +1,7 @@
 // cpu.sv
 // RISC-V CPU top level Module
-// Ver: 3.0
-// Date: 02/02/23
+// Ver: 3.1
+// Date: 07/02/23
 
 module cpu #(parameter n = 32) (
     input logic clock,
