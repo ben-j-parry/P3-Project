@@ -19,11 +19,14 @@ module progc #(parameter n)(
 
 always_ff @(posedge clock or posedge reset) 
 begin
-    if (reset)
+   if (reset)
         pcOut <= {n{1'b0}}; //reset the counter
-    else if (incr) // increment the pc
-	    pcOut <= pcOut + 1;
+   else if (incr) // increment the pc
+	pcOut <= pcOut + 1;
 
 end
 
+
 endmodule
+
+

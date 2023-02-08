@@ -1,7 +1,7 @@
 // decoder.sv
 // RISC-V Decoder Module
-// Ver: 3.0
-// Date: 03/02/23
+// Ver: 4.0
+// Date: 08/02/23
 `include "opcodes.sv"
 
 module decoder (
@@ -13,10 +13,10 @@ module decoder (
     output logic [3:0] AluOp,
     output logic regw,
     output logic incr,
-    output logic imm,
+    output logic [1:0] imm,
     output logic writesel, //needs to be 2 bits for the jumps
     output logic ramR,
-    output logic shifti
+    output logic ramW
 );
 
 always_comb
@@ -25,9 +25,9 @@ begin
 
     AluOp = 4'd0; //initial values
     regw = 1'b0; 
-    imm = 1'b0;
+    imm = 2'b0;
     ramR = 1'b0;
-    shifti = 1'b0;
+    ramW = 1'b0;
     writesel = 1'b0;
 
     case (opcode)
@@ -45,15 +45,16 @@ begin
 
         if (funct3 == 3'b101 || funct3 == 001) //srli, srai or slli 
             begin
-                AluOp = {funct3, funct7[5]};
-                shifti = 1'b1; //allows use of 5 bit immediate
+                AluOp = {funct3, funct7[5]}; 
+				imm = 2'b10; //allows use of 5 bit immediate
             end
             else //the rest of the ALU operations
             begin
                  AluOp = {funct3, 1'b0}; 
+				 imm = 2'b01;
             end
         
-        imm = 1'b1;
+
         regw = 1'b1;
         writesel = 1'b0; //write from the ALU / not completely necessary
         end
@@ -62,20 +63,23 @@ begin
 /////////////////////////////////////////////////////////////////
         `ILOAD : begin 
             //this needs to be 2 clock cycles
-		
-	
-            //funct3 is used to decide which load is used
-            imm = 1'b1;
+
+            imm = 2'b01;
             AluOp = 4'b0000; //not completely necessary
             writesel = 1'b1; //write from the RAM
             ramR = 1'b1; 
-	    regw = 1'b1;
+	        regw = 1'b1;
 
         end
         //      S Instructions - Store
 /////////////////////////////////////////////////////////////////
         `SSTORE : begin 
-        
+
+           imm = 2'b11;
+	   AluOp = 4'b0000;
+	   writesel = 1'b1; //write from the RAM
+	   ramW = 1'b1;	
+           
         end
 /////////////////////////////////////////////////////////////////
         default: begin

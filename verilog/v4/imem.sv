@@ -14,7 +14,7 @@ output logic [n-1:0] instr
 logic [n-1:0] iReg [(1<<(5))-1:0];
 
 initial //read program file
-	$readmemh("prog4.hex",iReg);
+	$readmemh("prog5.hex",iReg);
 
 //assign current instruction
 assign instr = iReg[addr];

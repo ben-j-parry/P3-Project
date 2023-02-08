@@ -1,7 +1,7 @@
 // cpu.sv
 // RISC-V CPU top level Module
-// Ver: 3.0
-// Date: 02/02/23
+// Ver: 4.0
+// Date: 08/02/23
 
 module cpu #(parameter n = 32) (
     input logic clock,
@@ -13,13 +13,13 @@ module cpu #(parameter n = 32) (
 /////////////////////////////////////////////////////////////////
 //ALU 
 logic [3:0] AluOp;
-logic imm;
+logic [1:0] imm;
 logic [n-1:0] AluA;
 logic [n-1:0] AluB; //ouput from the imm mux
 logic [n-1:0] AluOutput;
 /////////////////////////////////////////////////////////////////
 //Registers
-logic [n-1:0] dR1, dR2, regwdata;
+logic [31:0] dR1, dR2, regwdata;
 logic regw;
 /////////////////////////////////////////////////////////////////
 //Program Counter
@@ -54,10 +54,11 @@ registers #(.n(n)) regs (.clock(clock), .regw(regw), .wdata(regwdata), .waddr(in
 alu #(.n(n)) ALUO (.AluOp(AluOp), .A(AluA), .B(AluB), .AluOut(AluOutput));
                    
 ram #(.n(n)) DataMem (.clock(clock), .ramR(ramR), .ramW(ramW), .addr(AluOutput), .dataW(ramWdata), .dataR(ramROut)); 
+//wdata is from rs2 of regs (dr2)
 //wdata is probs wrong, will sort it when do store
 //control module
 decoder Control (.clock(clock), .opcode(instr[6:0]), .funct3(instr[14:12]), .funct7(instr[31:25]), .AluOp(AluOp), .regw(regw),
-                 .incr(incr), .imm(imm), .writesel(writesel), .ramR(ramR), .shifti(shifti));
+                 .incr(incr), .imm(imm), .writesel(writesel), .ramR(ramR), .ramW(ramW));
 
  /////////////////////////////////////////////////////////////////
  // Combinational Logic   
@@ -75,6 +76,20 @@ decoder Control (.clock(clock), .opcode(instr[6:0]), .funct3(instr[14:12]), .fun
 	endcase
 	
 	//AluB Mux
+	//change this to 2 bit imm value
+	// 00 no imm
+	// 01 reg imm
+	// 10 shift imm
+	// 11 store imm
+	
+	case(imm)
+		2'b00: AluB = dR2; //no imm
+		2'b01: AluB = instr[31:20]; //reg imm
+		2'b10: AluB = instr[24:20]; // shift imm
+		2'b11: AluB = {instr[31:25], instr[11:7]}; //store imm
+		default: AluB = dR2;
+	endcase
+	/*
         //MUX for immediate operand 
         if (imm) //if imm is active either use full imm or 5 bit imm depending on if shift is used
         begin 
@@ -91,28 +106,40 @@ decoder Control (.clock(clock), .opcode(instr[6:0]), .funct3(instr[14:12]), .fun
 
             AluB = dR2; //for the non shift immediate operations
         end
-        
+       */ 
         case (writesel)
-           1'b0: regwdata = AluOutput; //write to regs from alu output
-           1'b1: begin
+			1'b0: regwdata = AluOutput; //write to regs from alu output
+			1'b1: begin
 
-		    //regwdata = ramROut; //write to regs from ram output
+				//regwdata = ramROut; //write to regs from ram output
 
-             //funct3 Load Mux
-		      
-            case(instr[14:12]) 
-		        //sign extension
-	            3'b000: regwdata = {{24{ramROut[7]}}, ramROut[7:0]};   //lb - Load Byte
-	            3'b001: regwdata = {{16{ramROut[15]}}, ramROut[15:0]};     //lh -  Load Halfword
-	   	        3'b010: regwdata = ramROut; //lw - Load Word
-		        //no sign extension
-	   	        3'b100: regwdata = {24'b0, ramROut[7:0]};	 //lbu -  Load Byte Unsigned
-	   	        3'b101: regwdata = {16'b0, ramROut[15:0]};	//lhu - Load Halfword Unsigned
-		        default: regwdata = ramROut;
-		    endcase
-	        end
-            default: regwdata = AluOutput; 
+                //funct3 Load Mux
+				if(ramR) begin
+					case(instr[14:12]) 
+						//sign extension
+						3'b000: regwdata = {{24{ramROut[7]}}, ramROut[7:0]};   //lb - Load Byte
+						3'b001: regwdata = {{16{ramROut[15]}}, ramROut[15:0]};     //lh -  Load Halfword
+						3'b010: regwdata = ramROut; //lw - Load Word
+						//no sign extension
+						3'b100: regwdata = {24'b0, ramROut[7:0]};	 //lbu -  Load Byte Unsigned
+						3'b101: regwdata = {16'b0, ramROut[15:0]};	//lhu - Load Halfword Unsigned
+					default: regwdata = ramROut;
+					endcase
+				end
+
+				if (ramW) begin
+					case (instr[14:12])
+						3'b000: ramWdata = dR2[7:0]; //sb - Store Byte
+						3'b001: ramWdata = dR2[15:0];	//sh - Store Halfword
+						3'b010: ramWdata = dR2;//sw - Store Word
+						default: ramWdata = dR2;
+					endcase
+				end
+			end
+			default: regwdata = AluOutput; 
         endcase
+
+	
 
 	outport = AluOutput;
 

@@ -1,5 +1,5 @@
 // alutestb.sv
-// RISC-V CPU v1 Test Bench Module
+// RISC-V CPU v4 Test Bench Module
 // Ver: 1.0
 // Date: 06/12/22
 
