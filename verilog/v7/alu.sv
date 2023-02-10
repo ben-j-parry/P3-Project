@@ -1,14 +1,16 @@
 // alu.sv
 // RISC-V ALU Module
-// Ver: 2.0
-// Complete untested
-// Date: 31/01/23
+// Ver: 3.0
+// Complete 
+// Date: 10/02/23
 
-module alu #(parameter n = 32)(
+module alu #(parameter n)(
     input logic [3:0] AluOp, //4 bit operation code
-    input logic [n-1:0] A, B, //32 bit inputs
+    input logic signed [n-1:0] A, B, //32 bit inputs
     output logic [n-1:0] AluOut //32 bit outputs
 );
+
+logic [n-1:0] ua, ub;
 
 always_comb
 begin
@@ -21,7 +23,12 @@ begin
     //requires signed subtraction
     4'b0100: AluOut = (A < B) ? 1 : 0; //SLT  
     //requires unsigned subtraction
-    4'b0110: AluOut = (A < B) ? 1 : 0; //SLTU
+    4'b0110:	
+	begin 
+		ua = unsigned'(A);
+		ub = unsigned'(B);
+	 	AluOut = (A < B) ? 1 : 0; //SLTU
+	end
     4'b1000: AluOut = A ^ B;          //XOR
     4'b1010: AluOut = A >> B;         //SRL (shifts A right B times)
     4'b1011: AluOut = A >>> B;        //SRA (shifts A right B times but preserves the sign using sign extension)
@@ -30,8 +37,6 @@ begin
     //ALL ALU Operations
     default: AluOut = 0;
     endcase
-
-    //flags are handled seperately
 end
 
 endmodule

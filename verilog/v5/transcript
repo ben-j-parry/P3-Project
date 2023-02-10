@@ -1,0 +1,597 @@
+# Compile of alu.sv was successful.
+# Compile of cpu.sv was successful.
+# Compile of cpuv5tb.sv was successful.
+# Compile of decoder.sv was successful.
+# Compile of imem.sv was successful.
+# Compile of opcodes.sv was successful.
+# Compile of progc.sv was successful.
+# Compile of ram.sv was successful.
+# Compile of registers.sv was successful.
+# 9 compiles, 0 failed with no errors.
+# Compile of imem.sv was successful.
+vsim -voptargs=+acc work.cputestb
+# vsim -voptargs="+acc" work.cputestb 
+# Start time: 12:06:03 on Feb 09,2023
+# ** Note: (vsim-3812) Design is being optimized...
+# Loading sv_std.std
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/cpu1/reset
+add wave -position end  sim:/cputestb/cpu1/outport
+add wave -position end  sim:/cputestb/cpu1/AluOp
+add wave -position end  sim:/cputestb/cpu1/imm
+add wave -position end  sim:/cputestb/cpu1/AluA
+add wave -position end  sim:/cputestb/cpu1/AluB
+add wave -position end  sim:/cputestb/cpu1/AluOutput
+add wave -position end  sim:/cputestb/cpu1/dR1
+add wave -position end  sim:/cputestb/cpu1/dR2
+add wave -position end  sim:/cputestb/cpu1/regwdata
+add wave -position end  sim:/cputestb/cpu1/regw
+add wave -position end  sim:/cputestb/cpu1/incr
+add wave -position end  sim:/cputestb/cpu1/pcOut
+add wave -position end  sim:/cputestb/cpu1/addr
+add wave -position end  sim:/cputestb/cpu1/instr
+add wave -position end  sim:/cputestb/cpu1/ramR
+add wave -position end  sim:/cputestb/cpu1/ramW
+add wave -position end  sim:/cputestb/cpu1/writesel
+add wave -position end  sim:/cputestb/cpu1/rs1imm
+add wave -position end  sim:/cputestb/cpu1/ramROut
+add wave -position end  sim:/cputestb/cpu1/ramWdata
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+add wave -position end  sim:/cputestb/cpu1/DataMem/mem
+run
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+# ** Error: opcode error xx
+#    Time: 55 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+quit -sim
+# End time: 12:08:11 on Feb 09,2023, Elapsed time: 0:02:08
+# Errors: 2, Warnings: 10
+# Compile of alu.sv was successful.
+# Compile of cpu.sv was successful.
+# Compile of cpuv5tb.sv was successful.
+# Compile of decoder.sv was successful.
+# Compile of imem.sv was successful.
+# Compile of opcodes.sv was successful.
+# Compile of progc.sv was successful.
+# Compile of ram.sv was successful.
+# Compile of registers.sv was successful.
+# 9 compiles, 0 failed with no errors.
+vsim -voptargs=+acc work.cputestb
+# vsim -voptargs="+acc" work.cputestb 
+# Start time: 12:08:24 on Feb 09,2023
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Loading sv_std.std
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/cpu1/reset
+add wave -position end  sim:/cputestb/cpu1/outport
+add wave -position end  sim:/cputestb/cpu1/AluOp
+add wave -position end  sim:/cputestb/cpu1/imm
+add wave -position end  sim:/cputestb/cpu1/AluA
+add wave -position end  sim:/cputestb/cpu1/AluB
+add wave -position end  sim:/cputestb/cpu1/AluOutput
+add wave -position end  sim:/cputestb/cpu1/dR1
+add wave -position end  sim:/cputestb/cpu1/dR2
+add wave -position end  sim:/cputestb/cpu1/regwdata
+add wave -position end  sim:/cputestb/cpu1/regw
+add wave -position end  sim:/cputestb/cpu1/incr
+add wave -position end  sim:/cputestb/cpu1/pcOut
+add wave -position end  sim:/cputestb/cpu1/addr
+add wave -position end  sim:/cputestb/cpu1/instr
+add wave -position end  sim:/cputestb/cpu1/ramR
+add wave -position end  sim:/cputestb/cpu1/ramW
+add wave -position end  sim:/cputestb/cpu1/writesel
+add wave -position end  sim:/cputestb/cpu1/rs1imm
+add wave -position end  sim:/cputestb/cpu1/ramROut
+add wave -position end  sim:/cputestb/cpu1/ramWdata
+add wave -position end  sim:/cputestb/cpu1/DataMem/mem
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+run
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+# ** Error: opcode error xx
+#    Time: 95 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+quit -sim
+# End time: 12:09:35 on Feb 09,2023, Elapsed time: 0:01:11
+# Errors: 2, Warnings: 2
+# Compile of alu.sv was successful.
+# Compile of cpu.sv was successful.
+# Compile of cpuv5tb.sv was successful.
+# Compile of decoder.sv was successful.
+# Compile of imem.sv was successful.
+# Compile of opcodes.sv was successful.
+# Compile of progc.sv was successful.
+# Compile of ram.sv was successful.
+# Compile of registers.sv was successful.
+# 9 compiles, 0 failed with no errors.
+vsim -voptargs=+acc work.cputestb
+# vsim -voptargs="+acc" work.cputestb 
+# Start time: 12:09:41 on Feb 09,2023
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Loading sv_std.std
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/cpu1/reset
+add wave -position end  sim:/cputestb/cpu1/outport
+add wave -position end  sim:/cputestb/cpu1/AluOp
+add wave -position end  sim:/cputestb/cpu1/imm
+add wave -position end  sim:/cputestb/cpu1/AluA
+add wave -position end  sim:/cputestb/cpu1/AluB
+add wave -position end  sim:/cputestb/cpu1/AluOutput
+add wave -position end  sim:/cputestb/cpu1/dR1
+add wave -position end  sim:/cputestb/cpu1/dR2
+add wave -position end  sim:/cputestb/cpu1/regwdata
+add wave -position end  sim:/cputestb/cpu1/regw
+add wave -position end  sim:/cputestb/cpu1/incr
+add wave -position end  sim:/cputestb/cpu1/pcOut
+add wave -position end  sim:/cputestb/cpu1/addr
+add wave -position end  sim:/cputestb/cpu1/instr
+add wave -position end  sim:/cputestb/cpu1/ramR
+add wave -position end  sim:/cputestb/cpu1/ramW
+add wave -position end  sim:/cputestb/cpu1/writesel
+add wave -position end  sim:/cputestb/cpu1/rs1imm
+add wave -position end  sim:/cputestb/cpu1/ramROut
+add wave -position end  sim:/cputestb/cpu1/ramWdata
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+add wave -position 21  sim:/cputestb/cpu1/DataMem/mem
+run
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+quit -sim
+# End time: 12:11:21 on Feb 09,2023, Elapsed time: 0:01:40
+# Errors: 1, Warnings: 2
+# Compile of alu.sv was successful.
+# Compile of cpu.sv was successful.
+# Compile of cpuv5tb.sv was successful.
+# Compile of decoder.sv was successful.
+# Compile of imem.sv was successful.
+# Compile of opcodes.sv was successful.
+# Compile of progc.sv was successful.
+# Compile of ram.sv was successful.
+# Compile of registers.sv was successful.
+# 9 compiles, 0 failed with no errors.
+vsim -voptargs=+acc work.cputestb
+# vsim -voptargs="+acc" work.cputestb 
+# Start time: 12:11:30 on Feb 09,2023
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Loading sv_std.std
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/cpu1/reset
+add wave -position end  sim:/cputestb/cpu1/outport
+add wave -position end  sim:/cputestb/cpu1/AluOp
+add wave -position end  sim:/cputestb/cpu1/imm
+add wave -position end  sim:/cputestb/cpu1/AluA
+add wave -position end  sim:/cputestb/cpu1/AluB
+add wave -position end  sim:/cputestb/cpu1/AluOutput
+add wave -position end  sim:/cputestb/cpu1/dR1
+add wave -position end  sim:/cputestb/cpu1/dR2
+add wave -position end  sim:/cputestb/cpu1/regwdata
+add wave -position end  sim:/cputestb/cpu1/regw
+add wave -position end  sim:/cputestb/cpu1/incr
+add wave -position end  sim:/cputestb/cpu1/pcOut
+add wave -position end  sim:/cputestb/cpu1/addr
+add wave -position end  sim:/cputestb/cpu1/instr
+add wave -position end  sim:/cputestb/cpu1/ramR
+add wave -position end  sim:/cputestb/cpu1/ramW
+add wave -position end  sim:/cputestb/cpu1/writesel
+add wave -position end  sim:/cputestb/cpu1/rs1imm
+add wave -position end  sim:/cputestb/cpu1/ramROut
+add wave -position end  sim:/cputestb/cpu1/ramWdata
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+add wave -position end  sim:/cputestb/cpu1/DataMem/mem
+run
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+restart -f
+# ** Note: (vsim-12125) Error and warning message counts have been reset to '0' because of 'restart'.
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/cpu1/regs/regw
+add wave -position end  sim:/cputestb/cpu1/regs/wdata
+add wave -position end  sim:/cputestb/cpu1/regs/waddr
+add wave -position end  sim:/cputestb/cpu1/regs/rR1
+add wave -position end  sim:/cputestb/cpu1/regs/rR2
+add wave -position end  sim:/cputestb/cpu1/regs/dR1
+add wave -position end  sim:/cputestb/cpu1/regs/dR2
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+add wave -position end  sim:/cputestb/cpu1/DataMem/ramR
+add wave -position end  sim:/cputestb/cpu1/DataMem/ramW
+add wave -position end  sim:/cputestb/cpu1/DataMem/addr
+add wave -position end  sim:/cputestb/cpu1/DataMem/dataW
+add wave -position end  sim:/cputestb/cpu1/DataMem/dataR
+add wave -position end  sim:/cputestb/cpu1/DataMem/mem
+run
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+quit -sim
+# End time: 12:17:22 on Feb 09,2023, Elapsed time: 0:05:52
+# Errors: 1, Warnings: 1
+# Compile of decoder.sv was successful.
+vsim -voptargs=+acc work.cputestb
+# vsim -voptargs="+acc" work.cputestb 
+# Start time: 12:17:29 on Feb 09,2023
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# Loading sv_std.std
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/cpu1/reset
+add wave -position end  sim:/cputestb/cpu1/outport
+add wave -position end  sim:/cputestb/cpu1/AluOp
+add wave -position end  sim:/cputestb/cpu1/imm
+add wave -position end  sim:/cputestb/cpu1/AluA
+add wave -position end  sim:/cputestb/cpu1/AluB
+add wave -position end  sim:/cputestb/cpu1/AluOutput
+add wave -position end  sim:/cputestb/cpu1/dR1
+add wave -position end  sim:/cputestb/cpu1/dR2
+add wave -position end  sim:/cputestb/cpu1/regwdata
+add wave -position end  sim:/cputestb/cpu1/regw
+add wave -position end  sim:/cputestb/cpu1/incr
+add wave -position end  sim:/cputestb/cpu1/pcOut
+add wave -position end  sim:/cputestb/cpu1/addr
+add wave -position end  sim:/cputestb/cpu1/instr
+add wave -position end  sim:/cputestb/cpu1/ramR
+add wave -position end  sim:/cputestb/cpu1/ramW
+add wave -position end  sim:/cputestb/cpu1/writesel
+add wave -position end  sim:/cputestb/cpu1/rs1imm
+add wave -position end  sim:/cputestb/cpu1/ramROut
+add wave -position end  sim:/cputestb/cpu1/ramWdata
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+add wave -position end  sim:/cputestb/cpu1/DataMem/mem
+run
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+quit -sim
+# End time: 12:19:45 on Feb 09,2023, Elapsed time: 0:02:16
+# Errors: 1, Warnings: 2
+# Compile of cpu.sv was successful.
+vsim -voptargs=+acc work.cputestb
+# vsim -voptargs="+acc" work.cputestb 
+# Start time: 12:19:52 on Feb 09,2023
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# Loading sv_std.std
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/cpu1/reset
+add wave -position end  sim:/cputestb/cpu1/outport
+add wave -position end  sim:/cputestb/cpu1/AluOp
+add wave -position end  sim:/cputestb/cpu1/imm
+add wave -position end  sim:/cputestb/cpu1/AluA
+add wave -position end  sim:/cputestb/cpu1/AluB
+add wave -position end  sim:/cputestb/cpu1/AluOutput
+add wave -position end  sim:/cputestb/cpu1/dR1
+add wave -position end  sim:/cputestb/cpu1/dR2
+add wave -position end  sim:/cputestb/cpu1/regwdata
+add wave -position end  sim:/cputestb/cpu1/regw
+add wave -position end  sim:/cputestb/cpu1/incr
+add wave -position end  sim:/cputestb/cpu1/pcOut
+add wave -position end  sim:/cputestb/cpu1/addr
+add wave -position end  sim:/cputestb/cpu1/instr
+add wave -position end  sim:/cputestb/cpu1/ramR
+add wave -position end  sim:/cputestb/cpu1/ramW
+add wave -position end  sim:/cputestb/cpu1/writesel
+add wave -position end  sim:/cputestb/cpu1/rs1imm
+add wave -position end  sim:/cputestb/cpu1/ramROut
+add wave -position end  sim:/cputestb/cpu1/ramWdata
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+add wave -position end  sim:/cputestb/cpu1/DataMem/mem
+run
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+quit -sim
+# End time: 14:17:43 on Feb 09,2023, Elapsed time: 1:57:51
+# Errors: 1, Warnings: 2
+vsim -voptargs=+acc work.cputestb
+# vsim -voptargs="+acc" work.cputestb 
+# Start time: 14:17:59 on Feb 09,2023
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Loading sv_std.std
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/cpu1/DataMem/mem
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+run
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+run
+# ** Error: opcode error xx
+#    Time: 125 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+quit -sim
+# End time: 14:20:09 on Feb 09,2023, Elapsed time: 0:02:10
+# Errors: 2, Warnings: 1
+# Compile of alu.sv was successful.
+# Compile of cpu.sv was successful.
+# Compile of cpuv5tb.sv was successful.
+# Compile of decoder.sv was successful.
+# Compile of imem.sv was successful.
+# Compile of opcodes.sv was successful.
+# Compile of progc.sv was successful.
+# Compile of ram.sv was successful.
+# Compile of registers.sv was successful.
+# 9 compiles, 0 failed with no errors.
+vsim -voptargs=+acc work.cputestb
+# vsim -voptargs="+acc" work.cputestb 
+# Start time: 14:20:23 on Feb 09,2023
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Loading sv_std.std
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/cpu1/DataMem/mem
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+run -all
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+# ** Error: opcode error xx
+#    Time: 125 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+# Break key hit
+# Break in Module cputestb at H:/Part_3/Project/RISC/v5/cpuv5tb.sv line 18
+# Causality operation skipped due to absence of debug database file
+quit -sim
+quit -sim
+# End time: 14:25:43 on Feb 09,2023, Elapsed time: 0:05:20
+# Errors: 2, Warnings: 2
+# Compile of alu.sv was successful.
+# Compile of cpu.sv was successful.
+# Compile of cpuv5tb.sv was successful.
+# Compile of decoder.sv was successful.
+# Compile of imem.sv was successful.
+# Compile of opcodes.sv was successful.
+# Compile of progc.sv was successful.
+# Compile of ram.sv was successful.
+# Compile of registers.sv was successful.
+# 9 compiles, 0 failed with no errors.
+vsim work.decoder
+# vsim work.decoder 
+# Start time: 14:25:54 on Feb 09,2023
+# ** Note: (vsim-3812) Design is being optimized...
+# Loading sv_std.std
+# Loading work.decoder(fast)
+vsim -voptargs=+acc work.cputestb
+# End time: 14:26:08 on Feb 09,2023, Elapsed time: 0:00:14
+# Errors: 0, Warnings: 3
+# vsim -voptargs="+acc" work.cputestb 
+# Start time: 14:26:08 on Feb 09,2023
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Loading sv_std.std
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/cpu1/DataMem/mem
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+run
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+run
+# ** Error: opcode error xx
+#    Time: 125 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+# Break key hit
+quit -sim
+# End time: 14:28:14 on Feb 09,2023, Elapsed time: 0:02:06
+# Errors: 2, Warnings: 1
+vsim -voptargs=+acc work.cputestb
+# vsim -voptargs="+acc" work.cputestb 
+# Start time: 14:28:15 on Feb 09,2023
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Loading sv_std.std
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+add wave -position end  sim:/cputestb/cpu1/DataMem/mem
+run
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+run
+# ** Error: opcode error xx
+#    Time: 125 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+quit -sim
+# End time: 14:29:19 on Feb 09,2023, Elapsed time: 0:01:04
+# Errors: 2, Warnings: 1
+# reading C:/MentorGraphics/modeltech64_2020.1/win64/../modelsim.ini
+# Loading project imemtest
+# Compile of imem.sv was successful.
+# Compile of imemtestb.sv was successful.
+# 2 compiles, 0 failed with no errors.
+vsim -voptargs=+acc work.imemtestb
+# vsim -voptargs="+acc" work.imemtestb 
+# Start time: 15:28:10 on Feb 09,2023
+# ** Note: (vsim-3812) Design is being optimized...
+# Loading sv_std.std
+# Loading work.imemtestb(fast)
+# Loading work.imem(fast)
+add wave -position end  sim:/imemtestb/clock
+add wave -position end  sim:/imemtestb/addr
+add wave -position end  sim:/imemtestb/instr
+run
+# Break key hit
+quit -sim
+# End time: 15:29:43 on Feb 09,2023, Elapsed time: 0:01:33
+# Errors: 0, Warnings: 5
+# Compile of imem.sv was successful.
+vsim -voptargs=+acc work.imemtestb
+# vsim -voptargs="+acc" work.imemtestb 
+# Start time: 15:29:52 on Feb 09,2023
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# Loading sv_std.std
+# Loading work.imemtestb(fast)
+# Loading work.imem(fast)
+add wave -position end  sim:/imemtestb/clock
+add wave -position end  sim:/imemtestb/addr
+add wave -position end  sim:/imemtestb/instr
+run
+# ** Warning: (vsim-PLI-3406) Too many digits (8) in data on line 1 of file "lbswtest.hex". (Max is 2.)    : H:/Part_3/Project/RISC/imemtest/imem.sv(17)
+#    Time: 0 ns  Iteration: 0  Instance: /imemtestb/im
+# End time: 15:30:34 on Feb 09,2023, Elapsed time: 0:00:42
+# Errors: 0, Warnings: 3
+# Closing project H:/Part_3/Project/RISC/imemtest/imemtest.mpf
+# reading C:/MentorGraphics/modeltech64_2020.1/win64/../modelsim.ini
+# Loading project v5
+# Compile of imem.sv was successful.
+vsim -voptargs=+acc work.cputestb
+# vsim -voptargs="+acc" work.cputestb 
+# Start time: 15:31:01 on Feb 09,2023
+# ** Note: (vsim-8009) Loading existing optimized design _opt
+# Loading sv_std.std
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/clock
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+add wave -position end  sim:/cputestb/cpu1/DataMem/mem
+run
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+run
+# ** Error: opcode error xx
+#    Time: 125 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 97
+quit -sim
+# End time: 15:31:45 on Feb 09,2023, Elapsed time: 0:00:44
+# Errors: 2, Warnings: 2
+# Compile of cpu.sv failed with 1 errors.
+# Compile of cpu.sv failed with 1 errors.
+# ** Error: Acs sdne.
+# 
+#        Unable to replace existing ini file (H:/Part_3/Project/RISC/v5/v5.mpf).  File can not be renamed.
+# Compile of cpu.sv was successful.
+# Compile of decoder.sv was successful.
+# Compile of imem.sv was successful.
+vsim -voptargs=+acc work.cputestb
+# vsim -voptargs="+acc" work.cputestb 
+# Start time: 15:46:00 on Feb 09,2023
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# Loading sv_std.std
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+run
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 100
+# ** Error: opcode error xx
+#    Time: 65 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 100
+quit -sim
+# End time: 15:47:24 on Feb 09,2023, Elapsed time: 0:01:24
+# Errors: 3, Warnings: 6
+vsim -voptargs=+acc work.cpu
+# vsim -voptargs="+acc" work.cpu 
+# Start time: 15:51:36 on Feb 09,2023
+# ** Note: (vsim-3812) Design is being optimized...
+# Loading sv_std.std
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+quit -sim
+# End time: 15:51:50 on Feb 09,2023, Elapsed time: 0:00:14
+# Errors: 0, Warnings: 1
+# Compile of alu.sv was successful.
+# Compile of cpu.sv was successful.
+# Compile of cpuv5tb.sv was successful.
+# Compile of decoder.sv was successful.
+# Compile of imem.sv was successful.
+# Compile of opcodes.sv was successful.
+# Compile of progc.sv was successful.
+# Compile of ram.sv was successful.
+# Compile of registers.sv was successful.
+# 9 compiles, 0 failed with no errors.
+vsim -voptargs=+acc work.cputestb
+# vsim -voptargs="+acc" work.cputestb 
+# Start time: 15:54:30 on Feb 09,2023
+# ** Note: (vsim-3813) Design is being optimized due to module recompilation...
+# Loading sv_std.std
+# Loading work.cputestb(fast)
+# Loading work.cpu(fast)
+# Loading work.progc(fast)
+# Loading work.imem(fast)
+# Loading work.registers(fast)
+# Loading work.alu(fast)
+# Loading work.ram(fast)
+# Loading work.decoder(fast)
+add wave -position end  sim:/cputestb/cpu1/regs/regs
+run
+# ** Error: opcode error xx
+#    Time: 0 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 110
+# ** Error: opcode error xx
+#    Time: 85 ns  Scope: cputestb.cpu1.Control File: H:/Part_3/Project/RISC/v5/decoder.sv Line: 110
+run
+# End time: 17:44:35 on Feb 09,2023, Elapsed time: 1:50:05
+# Errors: 2, Warnings: 2

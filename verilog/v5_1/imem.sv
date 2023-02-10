@@ -6,15 +6,15 @@
 //is this the same as program memory
 //The instruction size is 32 bits
 //6 bit address
-module imem #(parameter alen = 6, ilen = 32)(
-input logic [alen-1:0] addr,
-output logic [ilen-1:0] instr
+module imem #(parameter n)(
+input logic [n-1:0] addr,
+output logic [n-1:0] instr
 );
 
-logic [ilen:0] iReg [(1<<alen)-1:0];
+logic [n-1:0] iReg [(1<<(5))-1:0];
 
-initial
-	$readmemh("prog.hex",iReg);
+initial //read program file
+	$readmemh("progv5.hex",iReg);
 
 //assign current instruction
 assign instr = iReg[addr];
