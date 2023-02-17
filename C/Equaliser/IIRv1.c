@@ -1,20 +1,19 @@
 //#include <stdlib.h>
 #include <stdio.h>
 
-     float myxn[3] = {0};
-     float myyn[3] = {0};
+     int myxn[3] = {0};
+     int myyn[3] = {0};
 
 //add coefficient calculations after testing first version assembly
-float coeff(){
- 
+int coeff(){
+
 
 }
 
 
-float IIR(float x){
+int IIR(int x){
 
-     float coeff[5] = {1.0, 1.5, 2.0, 2.5, 3.0};
-
+     int coeff[5] = {10, 15, 20, 25, 30};
      
      myxn[2] = myxn[1]; //x(n-1)
      myxn[1] = myxn[0]; //x(n-1)
@@ -29,12 +28,13 @@ float IIR(float x){
 
      return myyn[0];
 
-
 }
 
 int main(){
-    float x[7] = {1, 2, 3, 4, 5, 6, 7}; // input values
-    float y;
+     //load the x values from loadinput instruction
+    int x[7] = {1, 2, 3, 4, 5, 6, 7}; // input values
+    //output y values from a loadoutput instruction
+    int y;
 
 
     for (int i = 0; i < 7; i++){

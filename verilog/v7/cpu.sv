@@ -1,7 +1,7 @@
 // cpu.sv
 // RISC-V CPU top level Module
-// Ver: 7.0
-// Date: 10/02/23
+// Ver: 8.0
+// Date: 17/02/23
 
 module cpu #(parameter n = 32) ( //incorrectly parameterised i think
     input logic clock,
@@ -12,7 +12,7 @@ module cpu #(parameter n = 32) ( //incorrectly parameterised i think
 //Inputs and Outputs
 /////////////////////////////////////////////////////////////////
 //ALU 
-logic [3:0] AluOp;
+logic [4:0] AluOp;
 logic [2:0] imm;
 logic [n-1:0] AluA, AluB, AluOutput;
 /////////////////////////////////////////////////////////////////

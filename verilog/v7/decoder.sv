@@ -1,7 +1,7 @@
 // decoder.sv
 // RISC-V Decoder Module
-// Ver: 7.0
-// Date: 10/02/23
+// Ver: 8.0
+// Date: 17/02/23
 `include "opcodes.sv"
 
 module decoder (
@@ -9,7 +9,7 @@ module decoder (
     input logic [6:0] opcode,
     input logic [6:0] funct7,
     input logic [2:0] funct3,
-    output logic [3:0] AluOp,
+    output logic [4:0] AluOp,
     output logic regw,
     output logic [2:0] imm,
     output logic [1:0] writesel, //needs to be 2 bits for the jumps
@@ -23,7 +23,7 @@ always_comb
 begin
 
     //initial values
-    AluOp = 4'd0; 
+    AluOp = 5'd0; 
     regw = 1'b0; 
     imm = 3'b0;
     ramR = 1'b0;
@@ -38,7 +38,7 @@ begin
 /////////////////////////////////////////////////////////////////
         `RALU : begin 
 
-                AluOp = {funct3, funct7[5]}; //concatenates funct3 and funct7[5] to create AluOp
+                AluOp = {funct3, funct7[5], funct7[0]}; //concatenates funct3 and funct7[5] to create AluOp
                 regw = 1'b1;
                 writesel = 2'b00; //write from the ALU
         end
@@ -49,9 +49,9 @@ begin
 
                 case(funct3)
                         3'b101, 3'b001: begin //srli, srai or slli 
-                                AluOp = {funct3, funct7[5]}; 
+                                AluOp = {funct3, funct7[5], funct7[0]}; 
 
-					if (AluOp == 4'b1010)
+					if (AluOp == 5'b10100)
 						sext = 1'b0;
 					else
 						sext = 1'b1;
@@ -61,7 +61,7 @@ begin
                         end
 			3'b011: sext = 1'b0; //sltiu 
                         default: begin //this is needed as no other I instructions in the ALU use funct7
-                                AluOp = {funct3, 1'b0}; 
+                                AluOp = {funct3, 2'b00}; 
 			        imm = 3'b001;
 				sext = 1'b1;
                         end
@@ -78,7 +78,7 @@ begin
             //fix this somehow
 
                 imm = 3'b001;
-                AluOp = 4'b0000; //not completely necessary
+                AluOp = 5'b00000; //not completely necessary
                 writesel = 2'b01; //write from the RAM
                 ramR = 1'b1; 
 	        regw = 1'b1;
@@ -90,7 +90,7 @@ begin
         `SSTORE : begin 
 
                 imm = 3'b011;
-	        AluOp = 4'b0000;
+	        AluOp = 5'b00000;
 	        writesel = 2'b01; //write from the RAM
 	        ramW = 1'b1;	
            
@@ -103,7 +103,7 @@ begin
         `ULOAD, `UPC : begin
 
 		imm = 3'b100;
-		AluOp = 4'b0000;
+		AluOp = 5'b00000;
 		regw = 1'b1;
         	writesel = 2'b00; //write from the ALU / not completely necessary
 
