@@ -3,7 +3,7 @@
 // Ver: 8.0
 // Date: 17/02/23
 
-module cpu #(parameter n = 32) ( //incorrectly parameterised i think
+module cpu #(parameter DWIDTH = 32, PCLEN = 32;) ( //incorrectly parameterised i think
     input logic clock,
     input logic reset,
     output logic [n-1:0] outport //output of cpu - currently this will be ALU output
@@ -14,45 +14,54 @@ module cpu #(parameter n = 32) ( //incorrectly parameterised i think
 //ALU 
 logic [3:0] AluOp;
 logic [2:0] imm;
-logic [n-1:0] AluA, AluB, AluOutput;
+logic [DWIDTH-1:0] AluA, AluB, AluOutput;
 /////////////////////////////////////////////////////////////////
+
 //Registers
-logic [31:0] dR1, dR2, regwdata;
+logic [DWIDTH-1:0] dR1, dR2, regwdata;
 logic regw;
 /////////////////////////////////////////////////////////////////
 //Program Counter
 logic [1:0] pcsel;
-//logic [12:0] brimm;
-logic [n-1:0] targaddr, pcplus4;
+logic [31:0] targaddr, pcplus4;
 logic brnch;
 logic sext, brnchsext;
 /////////////////////////////////////////////////////////////////
 //Instruction Memory
-logic [n-1:0] addr, instr; //should probs be different parameters
+logic [31:0] addr
+logic [DWIDTH-1:0] instr; //should probs be different parameters
 /////////////////////////////////////////////////////////////////
 //RAM
 logic ramR, ramW;
 logic [1:0] writesel;
-logic [n-1:0] ramROut, ramWdata;
+logic [DWIDTH-1:0] ramROut, ramWdata;
+/////////////////////////////////////////////////////////////////
+//Extensions
+/////////////////////////////////////////////////////////////////
+//Multiplication Extension
+logic [DWIDTH-1:0] MDOut;
 /////////////////////////////////////////////////////////////////
 //Module Instantiations
 
-progc #(.n(n)) programCounter (.clock(clock), .reset(reset), .pcsel(pcsel), .targaddr(targaddr), .pcOut(addr), .pcplus4(pcplus4));
+progc #(.PCLEN(PCLEN)) programCounter (.clock(clock), .reset(reset), .pcsel(pcsel), .targaddr(targaddr), .pcOut(addr), .pcplus4(pcplus4));
                                          
-imem #(.n(n)) instructionMem  (.addr(addr), .instr(instr));
+imem #(.DWIDTH(DWIDTH)) instructionMem  (.addr(addr), .instr(instr));
 
-registers #(.n(n)) regs (.clock(clock), .regw(regw), .wdata(regwdata), .waddr(instr[11:7]),
+registers #(.DWIDTH(DWIDTH)) regs (.clock(clock), .regw(regw), .wdata(regwdata), .waddr(instr[11:7]),
                          .rR1(instr[19:15]), .rR2(instr[24:20]), .dR1(dR1), .dR2(dR2)); //rd, rs1 and rs2 respectively
                          
-alu #(.n(n)) ALUO (.AluOp(AluOp), .A(AluA), .B(AluB), .AluOut(AluOutput));
+alu #(.DWIDTH(DWIDTH)) ALUO (.AluOp(AluOp), .A(AluA), .B(AluB), .AluOut(AluOutput));
                    
-ram #(.n(n)) DataMem (.clock(clock), .ramR(ramR), .ramW(ramW), .addr(AluOutput), .dataW(ramWdata), .dataR(ramROut)); 
+ram #(.DWIDTH(DWIDTH)) DataMem (.clock(clock), .ramR(ramR), .ramW(ramW), .addr(AluOutput), .dataW(ramWdata), .dataR(ramROut)); 
 
-branchgen #(.n(n)) branchcondgen (.A(dR1), .B(dR2), .brfunc(instr[14:12]), .brnch(brnch), .brnchsext(brnchsext));
+branchgen #(.DWIDTH(DWIDTH)) branchcondgen (.A(dR1), .B(dR2), .brfunc(instr[14:12]), .brnch(brnch), .brnchsext(brnchsext));
 
 //Control Module
 decoder Control (.clock(clock), .opcode(instr[6:0]), .funct3(instr[14:12]), .funct7(instr[31:25]), .AluOp(AluOp), .regw(regw),
                   .imm(imm), .writesel(writesel), .ramR(ramR), .ramW(ramW), .pcsel(pcsel), .sext(sext));
+
+//Multiplication Extension
+muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .MDOut(MDOut));
 
  /////////////////////////////////////////////////////////////////
  // Combinational Logic   
@@ -81,10 +90,7 @@ decoder Control (.clock(clock), .opcode(instr[6:0]), .funct3(instr[14:12]), .fun
 			//targaddr = {instr[31:12] >> 2};
 		default: targaddr = 1;
 	endcase
-	end
 
-	always_comb
-	begin
 	//AluA Mux
 	//could this be moved in the writesel case or combined with the lui auipc if statement
 	case(ramR || ramW)
@@ -105,14 +111,14 @@ decoder Control (.clock(clock), .opcode(instr[6:0]), .funct3(instr[14:12]), .fun
 		3'b010: begin
 			if(sext)
 				AluB = {{26{instr[24]}}, instr[24:20]}; // I Type Shift Immediate
-				//AluB = instr[24:20];
+
 			else
 				AluB = instr[24:20];
 		end
 		3'b001: begin
 			if(sext)
 				AluB = {{21{instr[31]}}, instr[31:20]}; // I Type Immediate
-				//AluB = instr[31:20];
+
 			else
 				AluB = instr[31:20];
 		end 
@@ -120,10 +126,7 @@ decoder Control (.clock(clock), .opcode(instr[6:0]), .funct3(instr[14:12]), .fun
 		3'b100: AluB = {instr[31:12], 12'b0}; // U Type Immediate
 		default: AluB = dR2;
 	endcase
-	end
 
-	always_comb
-	begin
     case (writesel)
 		2'b00: regwdata = AluOutput; //write to regs from alu output
 		2'b01: begin //write to regs from ram output
@@ -157,6 +160,7 @@ decoder Control (.clock(clock), .opcode(instr[6:0]), .funct3(instr[14:12]), .fun
 		end
 		2'b10: regwdata = pcplus4; //write to regs from pc + 4
 					   //rd is meant to be x1 i think
+		2'b11: regwdata = MDOut; //space here for the MULDIV output
 		default: regwdata = AluOutput; 
     endcase
 	end

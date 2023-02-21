@@ -9,7 +9,7 @@ module decoder (
     input logic [6:0] opcode, funct7,
     input logic [2:0] funct3,
     output logic [3:0] AluOp,
-    output logic regw, ramR, ramW, sext,
+    output logic regw, ramR, ramW, sext, muldiv,
     output logic [2:0] imm,
     output logic [1:0] writesel, //needs to be 2 bits for the jumps
     output logic [1:0] pcsel
@@ -33,10 +33,20 @@ begin
         //      R Instructions
 /////////////////////////////////////////////////////////////////
         `RALU : begin 
-
-                AluOp = {funct3, funct7[5]}; //concatenates funct3 and funct7[5] to create AluOp
+                
                 regw = 1'b1;
-                writesel = 2'b00; //write from the ALU
+
+                if(funct7 == 7'd1)
+                begin
+                        muldiv = 1'b1;
+                        writesel = 2'b11;
+                end
+                else
+                begin //all non multiplication extension things
+                        AluOp = {funct3, funct7[5]}; //concatenates funct3 and funct7[5] to create AluOp
+                        writesel = 2'b00; //write from the ALU
+                end
+
         end
 /////////////////////////////////////////////////////////////////
         //      I Instructions - Immediates Only

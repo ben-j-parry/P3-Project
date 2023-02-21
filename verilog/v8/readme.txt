@@ -1,2 +1,3 @@
-v8 will add a second pipeline stage 
-and fix the load instruction so that it is multicycle and only needs to be written once in the assembly
+v8 will add a multiplication unit
+
+v9 will add pipelining and fix single cycle load issue

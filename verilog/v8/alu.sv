@@ -4,13 +4,13 @@
 // Complete 
 // Date: 10/02/23
 
-module alu #(parameter n)(
+module alu #(parameter DWIDTH)(
     input logic [3:0] AluOp, //4 bit operation code
-    input logic signed [n-1:0] A, B, //32 bit inputs
-    output logic [n-1:0] AluOut //32 bit outputs
+    input logic signed [DWIDTH-1:0] A, B, //32 bit inputs
+    output logic [DWIDTH-1:0] AluOut //32 bit outputs
 );
 
-logic [n-1:0] ua, ub;
+logic [DWIDTH-1:0] ua, ub;
 
 always_comb
 begin
