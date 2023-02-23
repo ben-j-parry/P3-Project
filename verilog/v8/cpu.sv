@@ -3,10 +3,10 @@
 // Ver: 8.0
 // Date: 17/02/23
 
-module cpu #(parameter DWIDTH = 32, PCLEN = 32;) ( //incorrectly parameterised i think
+module cpu #(parameter DWIDTH = 32, PCLEN = 32) ( //incorrectly parameterised i think
     input logic clock,
     input logic reset,
-    output logic [n-1:0] outport //output of cpu - currently this will be ALU output
+    output logic [DWIDTH-1:0] outport //output of cpu - currently this will be ALU output
 );
 
 //Inputs and Outputs
@@ -28,7 +28,7 @@ logic brnch;
 logic sext, brnchsext;
 /////////////////////////////////////////////////////////////////
 //Instruction Memory
-logic [31:0] addr
+logic [31:0] addr;
 logic [DWIDTH-1:0] instr; //should probs be different parameters
 /////////////////////////////////////////////////////////////////
 //RAM

@@ -8,7 +8,7 @@ parameter DWIDTH = 32;
 parameter PCLEN = 32;
 logic clock;
 logic reset;
-logic [n-1:0] outport;
+logic [DWIDTH-1:0] outport;
 
 cpu #(.DWIDTH(DWIDTH), .PCLEN(PCLEN)) cpu1 (.*);
 

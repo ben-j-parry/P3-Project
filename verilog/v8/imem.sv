@@ -14,7 +14,7 @@ output logic [DWIDTH-1:0] instr
 logic [DWIDTH-1:0] iReg [(1<<(5))-1:0];
 
 initial //read program file
-	$readmemh("v8.hex",iReg);
+	$readmemh("mul.hex",iReg);
 
 //assign current instruction
 assign instr = iReg[addr];
