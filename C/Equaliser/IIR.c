@@ -1,19 +1,23 @@
-//#include <stdlib.h>
+// IIR.c
+// Program designed to calculate the output of the algorithm
+// This program is not designed for conversion to assembly
+// Ver:  v2
+// Date: 24/02/23
 #include <stdio.h>
 
-     float myxn[3] = {0};
-     float myyn[3] = {0};
+     long myxn[3] = {0};
+     long myyn[3] = {0};
 
 //add coefficient calculations after testing first version assembly
-float coeff(){
+long coeff(){
  
 
 }
 
 
-float IIR(float x){
+long IIR(long x){
 
-     float coeff[5] = {1.0, 1.5, 2.0, 2.5, 3.0};
+     long coeff[5] = {10, 15, 20, 25, 30};
 
      
      myxn[2] = myxn[1]; //x(n-1)
@@ -32,9 +36,9 @@ float IIR(float x){
 
 }
 
-int main(){
-    float x[7] = {1, 2, 3, 4, 5, 6, 7}; // input values
-    float y;
+long main(){
+    long x[7] = {1, 2, 3, 4, 5, 6, 7}; // input values
+    long y;
 
 
     for (int i = 0; i < 7; i++){

@@ -1,0 +1,62 @@
+what does the IIR need to do?
+
+/*
+long coeff[5] = {10, 15, 20, 25, 30};
+
+     
+     myxn[2] = myxn[1]; //x(n-2)
+     myxn[1] = myxn[0]; //x(n-1)
+     myxn[0] = x; //x(n)
+    
+     myyn[2] = myyn[1]; //y(n-2)
+     myyn[1] = myyn[0]; //y(n-1)
+
+     //IIR Difference Equation
+     //y(n) =      b0*x(n)    +     b1*x(n−1)    +     b2*x(n−2)    −    a1*y(n−1)     −      a2*y(n−2)
+     myyn[0] = (coeff[0]*myxn[0]) + (coeff[1]*myxn[1]) + (coeff[2]*myxn[2]) - (coeff[3]*myyn[1]) - (coeff[4]*myyn[2]); //y(n)
+
+     return myyn[0];
+*/
+
+C code from inside IIR.C
+
+initially the code needs to load all coefficients and other values into the mem/registers
+
+For each sample the code needs to 
+shift x(n-1) into the x(n-2) register as its the x(n-2) for the next sample
+shift x(n) into x(n-1) for same reason
+load next sample into x(n) this uses the LADC instruction i designed
+
+then the code must 
+compute the difference equation 
+ //y(n) = b0*x(n) + b1*x(n−1) + b2*x(n−2) − a1*y(n−1) − a2*y(n−2)
+
+ then output the value of the filter using SADC
+
+ LI s0, coeff0
+ LI s1, coeff1 
+ LI s2, coeff2
+ LI s3, coeff3
+ LI s4, coeff4
+
+ LI t0, 0 //x(n-2)
+ LI t1, 0 //x(n-1)
+ LI t2, 0 //x(n)
+ LI t3, 0 //y(n-2)
+ LI t4, 0 //y(n-1)
+ LI t5, 0 //y(n)
+
+
+ for example
+
+IIR_funct:
+    MV t0, t1
+    MV t1, t2
+    LADC t2
+    MV t3, t4
+    MV t4, t5
+
+     then must do the difference equation
+    
+    SDAC t5
+    jalr IIR or something

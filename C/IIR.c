@@ -1,21 +1,28 @@
-//#include <stdlib.h>
+// IIR.c
+// Program designed to calculate the output of the algorithm
+// This program is not designed for conversion to assembly
+// Ver:  v2
+// Date: 24/02/23
 #include <stdio.h>
 
-     int myxn[3] = {0};
-     int myyn[3] = {0};
+
+
+     long myxn[3] = {0};
+     long myyn[3] = {0};
 
 //add coefficient calculations after testing first version assembly
-int coeff(){
-
+long coeff(){
+ 
 
 }
 
 
-int IIR(int x){
+long IIR(long x){
 
-     int coeff[5] = {10, 15, 20, 25, 30};
+     long coeff[5] = {10, 15, 20, 25, 30};
+
      
-     myxn[2] = myxn[1]; //x(n-1)
+     myxn[2] = myxn[1]; //x(n-2)
      myxn[1] = myxn[0]; //x(n-1)
      myxn[0] = x; //x(n)
     
@@ -28,13 +35,12 @@ int IIR(int x){
 
      return myyn[0];
 
+
 }
 
-int main(){
-     //load the x values from loadinput instruction
-    int x[7] = {1, 2, 3, 4, 5, 6, 7}; // input values
-    //output y values from a loadoutput instruction
-    int y;
+long main(){
+    long x[7] = {1, 2, 3, 4, 5, 6, 7}; // input values
+    long y;
 
 
     for (int i = 0; i < 7; i++){

@@ -1,8 +1,7 @@
 close all;
 
 %loads a file which sweeps from 16Hz to 20kHz in 10 secs
-[audioData,fs] = audioread("C:\Users\ben-p\OneDrive\Documents\Modules\Part 3\P3 Project\mp3sweeps-1f\20kHzExp10.mp3");
-
+[audioData,fs] = audioread("C:\Users\ben-p\OneDrive\Documents\Modules\Part 3\P3 Project\code\MATLAB\mp3sweeps-1f\20kHzExp10.mp3");
 
 t = (0:length(audioData)-1)/fs;
 %fs = 44.1kHz
