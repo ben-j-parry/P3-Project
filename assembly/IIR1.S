@@ -5,15 +5,12 @@ li s0, 1 //b0
 li s1, 2 //b1 
 li s2, 3 //b2
 li s3, 4 //a1
-li s4, 5 //a2
-
+li s4, 5 //a2   
 sw s0, 0(gp) # 
 sw s1, 4(gp) # 
 sw s2, 8(gp) # 
 sw s3, 12(gp) # 
 sw s4, 16(gp) # 
-
-
 /*
 first ver will li the coeffs then sw them into ram, then lw them to be used by the function
 second ver will hardwire them into rom then load and store into ram to be used by function
@@ -29,7 +26,7 @@ li s5, 0 //y(n)
 
 IIR_funct:
     mv s0, s1 //x(n-2) = x(n-1)
-    mv s1, s2 //x(n-1) = x(n)
+    mv s1, t2 //x(n-1) = x(n)
     //new x(n) value
     //LADC t2 personal instructions
     mv s3, s4 //y(n-2) = y(n-1)
@@ -53,8 +50,8 @@ IIR_funct:
     lw t3, 16(gp)
     lw t3, 16(gp)
     mul t1, s3, t3 //a2*y(n−2)
-    sub s5, t0, t1 //y(n) gets final value
-    //SDAC t5 personal instructions
+    sub t5, t0, t1 //y(n) gets final value
+    //SDAC tb 5 personal instructions
     j IIR_funct  # jump to ra#
 
 

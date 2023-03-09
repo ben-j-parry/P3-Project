@@ -17,7 +17,7 @@ output logic [DWIDTH-1:0] dataR
 
 //the De2 has 2MB of SRAM 
 
-logic [DWIDTH-1:0] mem [(1<<5)-1:0]; //1<<5 is the same as 2^5
+logic [DWIDTH-1:0] mem [(1<<3)-1:0]; //1<<5 is the same as 2^5
 
 always_ff @(posedge clock) 
 begin

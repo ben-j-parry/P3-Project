@@ -19,7 +19,7 @@ long coeff(){
 
 long IIR(long x){
 
-     long coeff[5] = {10, 15, 20, 25, 30};
+     long coeff[5] = {1, 2, 3, 4, 5};
 
      
      myxn[2] = myxn[1]; //x(n-2)

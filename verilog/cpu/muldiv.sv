@@ -37,7 +37,8 @@ endmodule
 module muldiv #(parameter DWIDTH) (
     output logic [DWIDTH-1:0] MDOut,
     input logic [DWIDTH-1:0] A, B,
-    input logic [2:0] MDFunc
+    input logic [2:0] MDFunc,
+	input logic mulEn
 );
 
 logic [63:0] prods, prodsu, produ;
@@ -48,7 +49,8 @@ logic [63:0] prods, prodsu, produ;
 
 always_comb
 begin
-
+if (mulEn)
+begin
     case (MDFunc)
         3'b000: //MUL
         begin
@@ -76,6 +78,7 @@ begin
        // 3'b111: //REMU
        default: MDOut = 0;
     endcase
+end
 end
 
 endmodule

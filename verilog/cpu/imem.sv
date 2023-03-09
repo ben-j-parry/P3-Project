@@ -11,10 +11,11 @@ input logic [31:0] addr,
 output logic [DWIDTH-1:0] instr
 );
 
-logic [DWIDTH-1:0] iReg [(1<<(5))-1:0];
+logic [DWIDTH-1:0] iReg [(1<<(6))-1:0];
+//only needs to be as big as the program
 
 initial //read program file
-	$readmemh("ladc.hex",iReg);
+	$readmemh("prog.hex",iReg);
 
 //assign current instruction
 assign instr = iReg[addr];

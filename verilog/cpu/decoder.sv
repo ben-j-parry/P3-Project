@@ -9,7 +9,7 @@ module decoder (
     input logic [6:0] opcode, funct7,
     input logic [2:0] funct3,
     output logic [3:0] AluOp,
-    output logic regw, ramR, ramW, sext, muldiv, outputbool,
+    output logic regw, ramR, ramW, sext, mulEn, outputbool,
     output logic [2:0] imm,
     output logic [2:0] writesel, //needs to be 3 bits for the load adc
     output logic [1:0] pcsel
@@ -28,6 +28,7 @@ begin
     sext = 1'b0;
     pcsel = 2'b00; //increments
     outputbool = 1'b0;
+	mulEn = 1'b0;
 
     case (opcode)
 /////////////////////////////////////////////////////////////////
@@ -39,7 +40,7 @@ begin
 
                 if(funct7 == 7'd1)
                 begin
-                        muldiv = 1'b1;
+                        mulEn = 1'b1;
                         writesel = 3'b011;
                 end
                 else

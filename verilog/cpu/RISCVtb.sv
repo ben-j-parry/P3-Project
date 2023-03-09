@@ -10,6 +10,7 @@ logic clock;
 logic reset;
 logic [31:0] adcdata;
 logic [DWIDTH-1:0] outport;
+integer i;
 
 cpu #(.DWIDTH(DWIDTH), .PCLEN(PCLEN)) cpu1 (.*);
 
@@ -30,10 +31,13 @@ end
 
 initial
 begin
-adcdata = 32'd50;
-#10ns
-adcdata = 32'd200;
+	adcdata = 32'd1;
 
-
+	for (i = 0; i < 1000; i = i + 1)
+	begin
+		#20ns
+		adcdata = adcdata + 1;
+		
+	end
 end
 endmodule

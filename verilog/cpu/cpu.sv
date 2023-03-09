@@ -24,7 +24,7 @@ logic regw;
 /////////////////////////////////////////////////////////////////
 //Program Counter
 logic [1:0] pcsel;
-logic [31:0] targaddr, pcplus4;
+logic signed [31:0] targaddr, pcplus4;
 logic brnch;
 logic sext, brnchsext;
 /////////////////////////////////////////////////////////////////
@@ -41,6 +41,7 @@ logic [DWIDTH-1:0] ramROut, ramWdata;
 /////////////////////////////////////////////////////////////////
 //Multiplication Extension
 logic [DWIDTH-1:0] MDOut;
+logic [DWIDTH-1:0] MA, MB;
 /////////////////////////////////////////////////////////////////
 //DAC Output
 logic outputbool;
@@ -62,10 +63,10 @@ branchgen #(.DWIDTH(DWIDTH)) branchcondgen (.A(dR1), .B(dR2), .brfunc(instr[14:1
 
 //Control Module
 decoder Control (.clock(clock), .opcode(instr[6:0]), .funct3(instr[14:12]), .funct7(instr[31:25]), .AluOp(AluOp), .regw(regw),
-                  .imm(imm), .writesel(writesel), .ramR(ramR), .ramW(ramW), .pcsel(pcsel), .sext(sext), .outputbool(outputbool));
+                  .imm(imm), .writesel(writesel), .ramR(ramR), .ramW(ramW), .pcsel(pcsel), .sext(sext), .mulEn(mulEn), .outputbool(outputbool));
 
 //Multiplication Extension
-muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .MDOut(MDOut));
+muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .MDOut(MDOut), .mulEn(mulEn));
 
  /////////////////////////////////////////////////////////////////
  // Combinational Logic   
@@ -89,7 +90,10 @@ muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .
 			else
 				targaddr = 1'b1;
 		end	
-		2'b11: targaddr = {instr[31], instr[21:12], instr[22], instr[30:23], 1'b0};//jal
+		2'b11: begin
+			 targaddr = {{11{instr[31]}}, instr[31], instr[19:12], instr[20], instr[30:21], 1'b0};//jal
+			targaddr = (targaddr >>>2);
+			end
 		//2'b11: targaddr = {instr[31:12]};
 			//targaddr = {instr[31:12] >> 2};
 		default: targaddr = 1;
@@ -107,6 +111,7 @@ muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .
 		AluA = 5'b0;
 	else if (instr[6:0] == 7'b0010111) //adds pcOut to immediate for auipc
 		AluA = addr;
+
 
 	//AluB Mux
 	//for branches and jumps might need to make imm 3 bits
@@ -126,7 +131,7 @@ muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .
 			else
 				AluB = instr[31:20];
 		end 
-		3'b011: AluB = {instr[31:25], instr[11:7]}; //S Type Immediate
+		3'b011: AluB = {instr[31:25], instr[11:7]}>>2; //S Type Immediate
 		3'b100: AluB = {instr[31:12], 12'b0}; // U Type Immediate
 		default: AluB = dR2;
 	endcase
@@ -139,6 +144,7 @@ muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .
             		//funct3 Load Mux
 			//chooses which load is required
 	    		if(ramR) begin
+			AluB = AluB>>2;
 				case(instr[14:12]) 
 			     	//sign extended
 					3'b000: regwdata = {{24{ramROut[7]}}, ramROut[7:0]};   		//lb - Load Byte
