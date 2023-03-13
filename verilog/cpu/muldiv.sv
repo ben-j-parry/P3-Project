@@ -49,6 +49,8 @@ logic [63:0] prods, prodsu, produ;
 
 always_comb
 begin
+	
+	MDOut = '0;
 if (mulEn)
 begin
     case (MDFunc)
@@ -76,7 +78,7 @@ begin
         //3'b101: //DIVU
         //3'b110: //REM
        // 3'b111: //REMU
-       default: MDOut = 0;
+       default: MDOut = '0;
     endcase
 end
 end

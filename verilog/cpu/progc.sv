@@ -15,7 +15,9 @@ logic [PCLEN-1:0] tmptrgt;
 
 always_comb
 begin
-
+	
+	pcplus4 = '0;
+	
 	case(pcsel)
 	2'b00: tmptrgt = pcOut + 1'b1; //PC + 4
 	2'b10: tmptrgt = pcOut + targaddr; //Branches

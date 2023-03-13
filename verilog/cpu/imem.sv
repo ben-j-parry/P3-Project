@@ -15,7 +15,7 @@ logic [DWIDTH-1:0] iReg [(1<<(6))-1:0];
 //only needs to be as big as the program
 
 initial //read program file
-	$readmemh("prog.hex",iReg);
+	$readmemh("pass.hex",iReg);
 
 //assign current instruction
 assign instr = iReg[addr];

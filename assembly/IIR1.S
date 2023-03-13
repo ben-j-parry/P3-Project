@@ -1,4 +1,4 @@
-//this should be changed to loading from ROM
+ //this should be changed to loading from ROM
 //loads the coeffs
 li gp, 0
 li s0, 1 //b0

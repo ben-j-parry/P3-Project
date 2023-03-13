@@ -3,12 +3,16 @@
 // Ver: 8.0
 // Date: 17/02/23
 
-module cpu #(parameter DWIDTH = 32, PCLEN = 32) ( 
+module cpu #(parameter DWIDTH = 32, PCLEN = 32) (
     input logic clock,
     input logic reset,
-	input logic [31:0] adcdata, //cpu inputs 20 bit audio samples
-    output logic [DWIDTH-1:0] outport //output of cpu - currently this will be ALU output
+	input logic [31:0] adcdata, //cpu inputs 32 bit audio samples
+    output logic [DWIDTH-1:0] outport, //output of cpu, used to output the filtered audio
+	output logic output_valid, input_ready	//may need two of each if i make the processor stereo
 );
+
+//output_valid is the processor saying the input data to the DAC is valid and will be written to
+//input_ready is the processor saying the procesor is ready to take the next input sample
 
 //Inputs and Outputs
 /////////////////////////////////////////////////////////////////
@@ -17,7 +21,6 @@ logic [3:0] AluOp;
 logic [2:0] imm;
 logic [DWIDTH-1:0] AluA, AluB, AluOutput;
 /////////////////////////////////////////////////////////////////
-
 //Registers
 logic [DWIDTH-1:0] dR1, dR2, regwdata;
 logic regw;
@@ -37,6 +40,8 @@ logic ramR, ramW;
 logic [2:0] writesel;
 logic [DWIDTH-1:0] ramROut, ramWdata;
 /////////////////////////////////////////////////////////////////
+
+
 //Extensions
 /////////////////////////////////////////////////////////////////
 //Multiplication Extension
@@ -44,9 +49,12 @@ logic [DWIDTH-1:0] MDOut;
 logic [DWIDTH-1:0] MA, MB;
 /////////////////////////////////////////////////////////////////
 //DAC Output
-logic outputbool;
+logic outputbool, inputbool;
 /////////////////////////////////////////////////////////////////
+
+
 //Module Instantiations
+/////////////////////////////////////////////////////////////////
 
 progc #(.PCLEN(PCLEN)) programCounter (.clock(clock), .reset(reset), .pcsel(pcsel), .targaddr(targaddr), .pcOut(addr), .pcplus4(pcplus4));
                                          
@@ -63,16 +71,27 @@ branchgen #(.DWIDTH(DWIDTH)) branchcondgen (.A(dR1), .B(dR2), .brfunc(instr[14:1
 
 //Control Module
 decoder Control (.clock(clock), .opcode(instr[6:0]), .funct3(instr[14:12]), .funct7(instr[31:25]), .AluOp(AluOp), .regw(regw),
-                  .imm(imm), .writesel(writesel), .ramR(ramR), .ramW(ramW), .pcsel(pcsel), .sext(sext), .mulEn(mulEn), .outputbool(outputbool));
+                  .imm(imm), .writesel(writesel), .ramR(ramR), .ramW(ramW), .pcsel(pcsel), .sext(sext), .mulEn(mulEn), .outputbool(outputbool), .inputbool(inputbool));
 
 //Multiplication Extension
 muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .MDOut(MDOut), .mulEn(mulEn));
 
  /////////////////////////////////////////////////////////////////
- // Combinational Logic   
+ 
+ 
+ // Combinational Logic  
+ ///////////////////////////////////////////////////////////////// 
 
     always_comb
     begin
+	
+	//this infers latches
+	//default values may help?
+	targaddr ='0;
+	AluA = '0;
+	AluB = '0;
+	regwdata = '0;
+	ramWdata = '0;
 	
 	//pc target generation
 	case(pcsel) 
@@ -85,7 +104,7 @@ muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .
 					targaddr = {{22{instr[31]}}, instr[7], instr[30:25], instr[11:9]}; //0 is always at the end, always a multiple of 2
 					//targaddr = ({instr[31], instr[7], instr[30:25], instr[11:8]}>>1); //0 is always at the end, always a multiple of 2
 				else
-					targaddr = ({instr[31], instr[7], instr[30:25], instr[11:8]}>>1);
+					targaddr = ({instr[31], instr[7], instr[30:25], instr[11:8]}>>1); //looks wrong
 //needs to be sign extended	
 			else
 				targaddr = 1'b1;
@@ -101,17 +120,20 @@ muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .
 
 	//AluA Mux
 	//could this be moved in the writesel case or combined with the lui auipc if statement
-	case(ramR || ramW)
-	   1'b0: AluA = dR1;
-	   1'b1: AluA = instr[19:15];
+	//dont think its that important
+
+	case({ramR, ramW}) //decides the value of AluA
+	   2'b00: AluA = dR1;
+	   2'b01, 2'b10: AluA = instr[19:15];
 	   default: AluA = dR1;
 	endcase
-	
-	if (instr[6:0] == 7'b0110111) //adds immediate to 0 for lui
-		AluA = 5'b0;
-	else if (instr[6:0] == 7'b0010111) //adds pcOut to immediate for auipc
-		AluA = addr;
 
+	
+	case(instr[6:0]) //needed for auipc and lui
+		7'b0110111: AluA = 5'b0;
+		7'b0010111: AluA = addr;
+		default: AluA = dR1;
+	endcase
 
 	//AluB Mux
 	//for branches and jumps might need to make imm 3 bits
@@ -126,7 +148,7 @@ muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .
 		end
 		3'b001: begin
 			if(sext)
-				AluB = {{21{instr[31]}}, instr[31:20]}; // I Type Immediate
+				AluB = {{20{instr[31]}}, instr[31:20]}; // I Type Immediate
 
 			else
 				AluB = instr[31:20];
@@ -138,15 +160,18 @@ muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .
 
     case (writesel)
 		3'b000: regwdata = AluOutput; //write to regs from alu output
-		3'b001: begin //write to regs from ram output
-					//used for loads and stores
+		3'b001: 
+		begin //write to regs from ram output
+			  //used for loads and stores
 
-            		//funct3 Load Mux
-			//chooses which load is required
+            	//funct3 Load Mux
 	    		if(ramR) begin
-			AluB = AluB>>2;
-				case(instr[14:12]) 
-			     	//sign extended
+
+				//AluA = instr[19:15];
+				AluB = AluB>>2;
+
+				case(instr[14:12]) 		//chooses which load is required
+					//sign extended
 					3'b000: regwdata = {{24{ramROut[7]}}, ramROut[7:0]};   		//lb - Load Byte
 					3'b001: regwdata = {{16{ramROut[15]}}, ramROut[15:0]};     	//lh -  Load Halfword
 					3'b010: regwdata = ramROut; 								//lw - Load Word
@@ -155,17 +180,34 @@ muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .
 					3'b101: regwdata = {16'b0, ramROut[15:0]};					//lhu - Load Halfword Unsigned
 					default: regwdata = ramROut;
 				endcase
+
+				
+			end
+			else 
+			begin
+
+				//AluA = dR1;
+				regwdata = AluOutput;
 			end
 
 			//funct3 Store Mux
-			//chooses which store is required
+			
 			if (ramW) begin
-				case (instr[14:12])
-					3'b000: ramWdata = dR2[7:0]; 	//sb - Store Byte
-					3'b001: ramWdata = dR2[15:0];	//sh - Store Halfword
+
+				//AluA = instr[19:15];
+
+				case (instr[14:12]) //chooses which store is required
+					3'b000: ramWdata = {24'b0, dR2[7:0]}; 	//sb - Store Byte
+					3'b001: ramWdata = {16'b0, dR2[15:0]};	//sh - Store Halfword
 					3'b010: ramWdata = dR2;			//sw - Store Word
 					default: ramWdata = dR2;
 				endcase
+			end
+			else
+			begin
+
+				//AluA = dR1;
+				ramWdata = 32'b0;
 			end
 		end
 		3'b010: regwdata = pcplus4; //write to regs from pc + 4
@@ -175,8 +217,15 @@ muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .
 		default: regwdata = AluOutput; 
     endcase
 	end
-
-	assign	outport = outputbool ? dR1 : 32'd0;
+ /////////////////////////////////////////////////////////////////
+ 
+ 
+ //Assignments
+ /////////////////////////////////////////////////////////////////
+	assign outport = outputbool ? dR1 : 32'd0;
+	assign output_valid = outputbool;
+	assign input_ready =  inputbool;
+/////////////////////////////////////////////////////////////////
 
 
 endmodule

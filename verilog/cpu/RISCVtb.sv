@@ -10,6 +10,8 @@ logic clock;
 logic reset;
 logic [31:0] adcdata;
 logic [DWIDTH-1:0] outport;
+logic output_valid;
+logic input_ready;
 integer i;
 
 cpu #(.DWIDTH(DWIDTH), .PCLEN(PCLEN)) cpu1 (.*);

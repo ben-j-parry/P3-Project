@@ -13,7 +13,10 @@ module branchgen #(parameter DWIDTH)(
 logic [DWIDTH-1:0] ua, ub;
 always_comb
 begin
-
+	ua = '0;
+	ub = '0;
+	
+	brnchsext = 1'b0;
     brnch = 1'b0;
     
     case (brfunc)

@@ -9,10 +9,9 @@ module decoder (
     input logic [6:0] opcode, funct7,
     input logic [2:0] funct3,
     output logic [3:0] AluOp,
-    output logic regw, ramR, ramW, sext, mulEn, outputbool,
-    output logic [2:0] imm,
-    output logic [2:0] writesel, //needs to be 3 bits for the load adc
-    output logic [1:0] pcsel
+    output logic regw, ramR, ramW, sext, mulEn, outputbool, inputbool,
+    output logic [2:0] imm, writesel,// writesel needs to be 3 bits for the load adc
+    output logic [1:0] pcsel //could this be changed to make the cpu multicycle?
 );
 
 always_comb
@@ -28,6 +27,7 @@ begin
     sext = 1'b0;
     pcsel = 2'b00; //increments
     outputbool = 1'b0;
+	inputbool = 1'b0;
 	mulEn = 1'b0;
 
     case (opcode)
@@ -139,7 +139,7 @@ begin
 /////////////////////////////////////////////////////////////////
         `UJJUMP : begin
 
-                pcsel = 2'b11;
+        pcsel = 2'b11;
 		regw = 1'b1;
 		writesel = 3'b010;
 
@@ -153,6 +153,7 @@ begin
 			regw = 1'b1;
 			imm = 3'b100;
 			writesel = 3'b100;
+			inputbool = 1'b1; //ready to load
 	   end
 /////////////////////////////////////////////////////////////////
 		//		U Intruction - Load from ADC
@@ -160,7 +161,9 @@ begin
 /////////////////////////////////////////////////////////////////
 		`SSDAC: begin
 
-		outputbool = 1'b1;
+		outputbool = 1'b1; //tells the processor to send the data to the outport
+							//should also send this value to the dac
+		
 	
 	   end
 /////////////////////////////////////////////////////////////////
