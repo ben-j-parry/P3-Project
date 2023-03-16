@@ -10,17 +10,14 @@ close all;
 t = (0:length(audioData)-1)/fs;
 %fs = 44.1kHz
 
-fs = 44100;
-G = 10;
+fs1 = 48000;
+G = 100;
 f0 = 10000;
-BW = 10;
-
-biquad = dsp.BiquadFilter;
-biquad.structure = 'Direct Form 1';
+BW = 500;
 
 %%%% Peaking Parametric Equaliser Filter
 A = 10^(G/20);
-omega0 = 2*pi*(f0/fs);
+omega0 = 2*pi*(f0/fs1);
 alpha = sin(omega0)*sinh((log(2)/2)*BW*(omega0/sin(omega0)));
 a0 = 1 + alpha;
 
@@ -34,14 +31,12 @@ a2 = (1 - alpha);
 
 %a0 = 1;
 
-
-
 %%%% Filter Response
 b = [b0 b1 b2];
 a = [a0 a1 a];
-%freqz(a,b,[])
+freqz(a,b,[])
 
- %y = filter(b,a,audioData);
+ y = filter(b,a,audioData);
 
 
 subplot(2,1,1)

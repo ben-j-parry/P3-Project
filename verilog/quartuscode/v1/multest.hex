@@ -1,0 +1,26 @@
+00000013
+00000013
+000003FF//ladc t2
+00702023
+00002e83
+00002e83
+80000437
+fff40413
+028eaf33
+000F007C //sdac t5
+fe1ff06f
+
+/*
+  nop
+  nop
+  func:
+  ladc t2
+  sw t2, 0(zero)
+  lw t4, 0(zero)
+  lw t4, 0(zero)
+  lui s0, 0x80000
+  addi s0, s0, -1
+  mulhu t5, t4, s0 //edited mulh to take [62:31]
+  sdac t5
+  j func
+  */

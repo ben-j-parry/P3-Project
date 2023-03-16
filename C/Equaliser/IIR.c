@@ -5,33 +5,27 @@
 // Date: 24/02/23
 #include <stdio.h>
 
-     long myxn[3] = {0};
-     long myyn[3] = {0};
-
-//add coefficient calculations after testing first version assembly
-long coeff(){
- 
-
-}
-
+     long x_n[3] = {0};
+     long y_n[3] = {0};
 
 long IIR(long x){
 
-     long coeff[5] = {10, 15, 20, 25, 30};
+     long b[3] = {467609407, -188079712, 259074799};
+     long a[3] = {2147483647, -1057646784, 1938949631};
 
      
-     myxn[2] = myxn[1]; //x(n-1)
-     myxn[1] = myxn[0]; //x(n-1)
-     myxn[0] = x; //x(n)
+     x_n[2] = x_n[1]; //x(n-1)
+     x_n[1] = x_n[0]; //x(n-1)
+     x_n[0] = x; //x(n)
     
-     myyn[2] = myyn[1]; //y(n-2)
-     myyn[1] = myyn[0]; //y(n-1)
+     y_n[2] = y_n[1]; //y(n-2)
+     y_n[1] = y_n[0]; //y(n-1)
 
      //IIR Difference Equation
      //y(n) =      b0*x(n)    +     b1*x(n−1)    +     b2*x(n−2)    −    a1*y(n−1)     −      a2*y(n−2)
-     myyn[0] = (coeff[0]*myxn[0]) + (coeff[1]*myxn[1]) + (coeff[2]*myxn[2]) - (coeff[3]*myyn[1]) - (coeff[4]*myyn[2]); //y(n)
+     y_n[0] = (b[0]*x_n[0]) + (b[1]*x_n[1]) + (b[2]*x_n[2]) - (a[1]*y_n[1]) - (a[2]*y_n[2]); //y(n)
 
-     return myyn[0];
+     return y_n[0];
 
 
 }
@@ -44,6 +38,6 @@ long main(){
     for (int i = 0; i < 7; i++){
           y = IIR(x[i]);
 
-          printf("%f \n", y);
+          printf("%lf \n", y);
     }
 }

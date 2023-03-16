@@ -1,0 +1,7 @@
+00000013 //nop
+00000013 //nop
+//func:
+000003FF //ladc t2
+00038f13 //mv t5, t2
+000F007C //sdac t5
+ff5ff06f //j func
