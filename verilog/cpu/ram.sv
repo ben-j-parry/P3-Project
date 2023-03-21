@@ -17,7 +17,8 @@ output logic [DWIDTH-1:0] dataR
 
 //the De2 has 2MB of SRAM 
 
-logic [DWIDTH-1:0] mem [(1<<5)-1:0]; //1<<5 is the same as 2^5
+// memory addresses 127-64
+logic [DWIDTH-1:0] mem [(1<<7)-1:(1<<6)]; 
 
 always_ff @(posedge clock) 
 begin

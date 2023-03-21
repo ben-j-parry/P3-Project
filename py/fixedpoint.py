@@ -1,11 +1,13 @@
 import math
 
+#coeffs
+b = [0.2447, 0.3754, 0.2448]
+a = [1, -0.3691,  0.2339]
 
-b = [0.2177475988864898681640625, -0.08758144080638885498046875, 0.120641104876995086669921875]
-a = [1, -0.4925051629543304443359375,  0.9028937816619873046875]
+values = range(3)
 
-values = range(2)
 
+#mapped values
 for x in values:
     b[x] = b[x] * 2147483647
     b[x] = math.floor(b[x])
@@ -17,6 +19,20 @@ for x in values:
     a[x] = math.floor(a[x])
 
 print(a)
+
+
+#binary
+for x in values:
+    #b[x] = bin(b[x])
+    b[x] = '{:032b}'.format(b[x])
+
+print(b)
+
+for x in values:
+    #a[x] = bin(a[x])
+    a[x] = '{:032b}'.format(a[x])
+print(a)
+
 
 
 

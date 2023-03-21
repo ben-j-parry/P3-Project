@@ -1,17 +1,20 @@
 close all;
 
 %loads a file which sweeps from 16Hz to 20kHz in 10 secs
-[audioData,fs] = audioread("C:\Users\ben-p\OneDrive\Documents\Modules\Part 3\P3 Project\code\MATLAB\mp3sweeps-1f\20kHzExp10.mp3");
+[audioData,fs] = audioread("C:\Users\ben-p\OneDrive\Documents\Modules\Part 3\P3 Project\code\MATLAB\mp3sweeps-1f\20kHzLin10.mp3");
 
 t = (0:length(audioData)-1)/fs;
 length(audioData)
 
-f = [0 0.6 0.6 1];
-m = [0 0 1 1];
+f = [0 0.5 0.5 1];
+m = [1 1 0 0];
 
-%[b,a]
+[b,a] = yulewalk(2,f,m);
 iirfilt = yulewalk(2,f,m);
 [h,w] = freqz(b,a,128);
+
+disp(b)
+disp(a)
 
 outf = filter(iirfilt,1,audioData);
 
@@ -30,12 +33,12 @@ ylim(ys) %sets the y axis to same as for the original signal
 
 
 
-disp(b)
-disp(a)
+%disp(b)
+%disp(a)
 
  b_q = b * 2147483647;
- a_q = a * 2147483647;
-
+a_q = a * 2147483647;
+%
 disp(b_q)
 disp(a_q)
 

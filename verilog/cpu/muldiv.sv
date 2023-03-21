@@ -1,14 +1,13 @@
 //muldiv.sv
 //RISC-V Multiplication Extension Module
-//Ver: 1.0
-//21/02/23
+//Ver: 2.0
+//15/03/23
+//adapted for fixed point notation
 
 //assembly code should be written
 //MULH[[S]U] rdh, rs1, rs2
 //MUL rdl, rs1, rs2
 
-//signed mul
-//with 16 bit audio should potentially only need this one (?)
 module signed_mult (
     output logic signed [63:0] prod,
     input logic signed [31:0] A, B
@@ -64,18 +63,17 @@ begin
         3'b001: //MULH
         begin
 
-            //MDOut = prods[63:32];	//for fixed point need to change this
-		MDOut = prods[62:31];
+            MDOut = prods[62:31];
         end
         3'b010: //MULHSU
         begin
                                        
-            MDOut = prodsu[62:31];      
+            MDOut = prodsu[63:32];      
         end
         3'b011: //MULHU
         begin
 
-            MDOut = produ[62:31];
+            MDOut = produ[63:32];
         end
         //3'b100: //DIV
         //3'b101: //DIVU

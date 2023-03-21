@@ -17,20 +17,23 @@ module processor (input logic CLOCK_50,
 	assign key = ~reset;
 	
 
-	logic adc_left_ready, adc_right_ready;
-	logic dac_left_ready, dac_right_ready;
+	wire adc_left_ready, adc_right_ready;
+	wire dac_left_ready, dac_right_ready;
 	
-	logic adc_left_valid, adc_right_valid;
-	logic dac_left_valid, dac_right_valid;
+	wire adc_left_valid, adc_right_valid;
+	wire dac_left_valid, dac_right_valid;
 	
-	logic [31:0] adc_left_data, adc_right_data;
-	logic [31:0] dac_left_data, dac_right_data;
+	wire [31:0] adc_left_data, adc_right_data;
+	wire [31:0] dac_left_data, dac_right_data;
+	
+	reg clk_4;
 	
 	clock_config clk1 (
 		.ref_clk_clk        (CLOCK_50),//input clock
 		.ref_reset_reset    (key),   //input reset
 		.audio_clk_clk      (AUD_XCK) //output clock
 	);
+	
 	
 	audio_video_config avcfg1 (
 		.clk         (CLOCK_50),
@@ -71,9 +74,14 @@ module processor (input logic CLOCK_50,
 		.to_dac_right_channel_valid   (dac_right_valid),
 		.to_dac_right_channel_ready   (dac_right_ready) 
 	);
+	/*
+	clk_div d1 (
+		.clk(clk),
+		.reset(key),
+		.clk_out(clk_4)
+		);
+	*/
 	
-	
-
 	cpu	RISC_V_core_0 (
 		//inputs
 		.clock(CLOCK_50),
@@ -107,7 +115,7 @@ module processor (input logic CLOCK_50,
 
 	//This section of code will connect the ADC straight to the DAC
 ///////////////////////////////////////////////////////////
-	/*
+		/*
 		if (adc_left_valid)
 		begin
 			adc_left_ready = 1'b1;
@@ -134,7 +142,7 @@ module processor (input logic CLOCK_50,
 			adc_right_ready = 1'b0;
 			dac_right_valid = 1'b0;
 		end
-	*/	
+		*/
 ///////////////////////////////////////////////////////////
 //	LEDS
 //these are leds to indicate if the reset is working
@@ -147,16 +155,19 @@ module processor (input logic CLOCK_50,
 			led_0 = 1'b0;
 		end
 		
-		if (adc_left_valid && adc_left_ready) 
+		if (adc_left_valid) 
 		begin
+			led_2 = 1'b1;
 			led_1 = 1'b1;
 		end
 		else 
 		begin
 			led_1 = 1'b0;
+			led_2 = 1'b1;
 		end
 		
-		if (adc_right_valid && adc_right_ready) 
+		/*
+		if (adc_right_valid) 
 		begin
 			led_2 = 1'b1;
 		end
@@ -164,26 +175,8 @@ module processor (input logic CLOCK_50,
 		begin
 			led_2 = 1'b0;
 		end
-		
-				
-		if (dac_left_valid && dac_left_ready) 
-		begin
-			led_3 = 1'b1;
-		end
-		else 
-		begin
-			led_3 = 1'b0;
-		end
-		
-		if (dac_right_valid && dac_right_ready) 
-		begin
-			led_4 = 1'b1;
-		end
-		else 
-		begin
-			led_4 = 1'b0;
-		end
-		
+		*/
+
 	end
 	
 	

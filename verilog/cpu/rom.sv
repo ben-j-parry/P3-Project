@@ -22,7 +22,7 @@ logic [DWIDTH-1:0] mem [(1<<6)-1:0]; //1<<5 is the same as 2^5
 //load the memory with coefficients from a hex file
 
 initial
- $readmemh("rom.hex",mem); //Assuming name of txt is data.txt
+ $readmemh("rom_data.hex",mem); //Assuming name of txt is data.txt
 
 
 always_ff @(posedge clock) 

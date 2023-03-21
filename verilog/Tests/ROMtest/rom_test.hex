@@ -1,0 +1,36 @@
+00000193
+10000113
+03c00393
+05500e13
+00712023
+01c12223
+0001a283
+0001a283
+0041a303
+0041a303
+00012383
+00012383
+00412e03
+00412e03
+
+/*
+addi gp, zero, 0
+addi sp, zero, 256
+
+
+addi t2, zero, 60
+addi t3, zero, 85
+
+sw t2, 0(sp)
+sw t3, 4(sp)
+
+lw t0, 0(gp)
+lw t0, 0(gp)
+lw t1, 4(gp)
+lw t1, 4(gp)
+
+lw t2, 0(sp)
+lw t2, 0(sp)
+lw t3, 4(sp)
+lw t3, 4(sp)
+*/

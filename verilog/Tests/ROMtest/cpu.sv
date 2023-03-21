@@ -81,7 +81,7 @@ muldiv #(.DWIDTH(DWIDTH)) Multiplier (.A(dR1), .B(dR2), .MDFunc(instr[14:12]), .
 
 //ROM
 
-rom #(.DWIDTH(DWIDTH)) CoeffMem (.clock(clock), .ramR(ramR), .addr(AluOutput), .dataR(romROut));
+rom #(parameter DWIDTH) Coeff_ROM (.clock(clock), .ramR(ramR), .addr(AluOutput), .dataR(romROut));
 
  /////////////////////////////////////////////////////////////////
  
@@ -132,7 +132,7 @@ rom #(.DWIDTH(DWIDTH)) CoeffMem (.clock(clock), .ramR(ramR), .addr(AluOutput), .
 
 	case({ramR, ramW}) //decides the value of AluA
 	   2'b00: AluA = dR1;
-	   2'b01, 2'b10: AluA = (instr[19:15]);
+	   2'b01, 2'b10: AluA = instr[19:15];
 	   default: AluA = dR1;
 	endcase
 
@@ -161,7 +161,7 @@ rom #(.DWIDTH(DWIDTH)) CoeffMem (.clock(clock), .ramR(ramR), .addr(AluOutput), .
 			else
 				AluB = instr[31:20];
 		end 
-		3'b011: AluB = ({instr[31:25], instr[11:7]}); //S Type Immediate
+		3'b011: AluB = {instr[31:25], instr[11:7]}>>2; //S Type Immediate
 		3'b100: AluB = {instr[31:12], 12'b0}; // U Type Immediate
 		default: AluB = dR2;
 	endcase
@@ -171,15 +171,12 @@ rom #(.DWIDTH(DWIDTH)) CoeffMem (.clock(clock), .ramR(ramR), .addr(AluOutput), .
 		3'b001: 
 		begin //write to regs from ram output
 			  //used for loads and stores
-			  
-			AluA = AluA>>2; //shifts the values so that they are no longer addressing bytes
-			AluB = AluB>>2;
-		
+
             	//funct3 Load Mux
 	    		if(ramR) begin
-					
+
 					//AluA = instr[19:15];
-					
+					AluB = AluB>>2;
 
 					//if the memory address is between 0 and 63 the CPU will read from the ROM otherwise it will read from RAM
 					if(AluOutput < 32'd64)
@@ -215,7 +212,7 @@ rom #(.DWIDTH(DWIDTH)) CoeffMem (.clock(clock), .ramR(ramR), .addr(AluOutput), .
 			//funct3 Store Mux
 			
 			if (ramW) begin
-			
+
 				//AluA = instr[19:15];
 
 				case (instr[14:12]) //chooses which store is required
