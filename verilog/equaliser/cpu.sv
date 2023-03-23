@@ -6,7 +6,7 @@
 module cpu #(parameter DWIDTH = 32, PCLEN = 32) (
     input logic clock,
     input logic reset,
-	input logic [31:0] adcdata, //cpu inputs 32 bit audio samples
+	input logic [31:0] adcdata, switchdata, //cpu inputs 32 bit audio samples
     output logic [DWIDTH-1:0] outport, //output of cpu, used to output the filtered audio
 	output logic output_valid, input_ready	//may need two of each if i make the processor stereo
 );
@@ -92,8 +92,6 @@ rom #(.DWIDTH(DWIDTH)) CoeffMem (.clock(clock), .ramR(ramR), .addr(AluOutput), .
     always_comb
     begin
 	
-	//this infers latches
-	//default values may help?
 	targaddr ='0;
 	AluA = '0;
 	AluB = '0;
@@ -236,6 +234,7 @@ rom #(.DWIDTH(DWIDTH)) CoeffMem (.clock(clock), .ramR(ramR), .addr(AluOutput), .
 					   //rd is meant to be x1 i think
 		3'b011: regwdata = MDOut; //space here for the MULDIV output
 		3'b100: regwdata = adcdata;
+		3'b101: regwdata = switchdata;
 		default: regwdata = AluOutput; 
     endcase
 	end

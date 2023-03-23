@@ -63,7 +63,7 @@ begin
         3'b001: //MULH
         begin
 
-            MDOut = prods[62:31];
+            MDOut = prods[60:29];
         end
         3'b010: //MULHSU
         begin

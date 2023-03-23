@@ -1,14 +1,13 @@
-// ram.sv
-// RISC-V synchronous ram Module
-// Ver: 2.2
+// rom.sv
+// RISC-V Read Only Memory Module
+// Ver: 1
 // Date: 1/12/22
 
 //should this module be using the SDRAM on the fpga?
-module ram #(parameter DWIDTH)(
+module rom #(parameter DWIDTH)(
 input logic clock,
-input logic ramR, ramW,
+input logic ramR,
 input logic [31:0] addr,  //17 bit address 
-input logic [DWIDTH-1:0] dataW, 
 output logic [DWIDTH-1:0] dataR
 );
 
@@ -17,15 +16,24 @@ output logic [DWIDTH-1:0] dataR
 
 //the De2 has 2MB of SRAM 
 
-logic [DWIDTH-1:0] mem [(1<<5)-1:0]; //1<<5 is the same as 2^5
+//memory addreses 63-0
+logic [DWIDTH-1:0] mem [(1<<6)-1:0]; //1<<5 is the same as 2^5
+
+//load the memory with coefficients from a hex file
+
+initial
+ $readmemh("rom_data.hex",mem); 
+
 
 always_ff @(posedge clock) 
 begin
-     if (ramW) //if memwrite is enabled the data is written to ram
-        mem[addr] <= dataW;
-    
+
     if (ramR) //if memread is enabled the data is written from ram
        dataR <= mem[addr];
+
 end
 
 endmodule
+
+//need to split the address space.
+ 

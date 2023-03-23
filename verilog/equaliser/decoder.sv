@@ -156,16 +156,26 @@ begin
 			inputbool = 1'b1; //ready to load
 	   end
 /////////////////////////////////////////////////////////////////
-		//		U Intruction - Load from ADC
-		//		ladc  - Load data from ADC
+		//		S Intruction - Store to DAC
+		//		sadc  - Store data to DAC
 /////////////////////////////////////////////////////////////////
 		`SSDAC: begin
 
 		outputbool = 1'b1; //tells the processor to send the data to the outport
 							//should also send this value to the dac
 		
-	
 	   end
+/////////////////////////////////////////////////////////////////
+		//		U Intruction - Load from Switches
+		//		lsw  - Load data from Switches
+/////////////////////////////////////////////////////////////////
+		`ULSW: begin
+			regw = 1'b1;
+			imm = 3'b100;
+			writesel = 3'b101;
+			
+	end
+	
 /////////////////////////////////////////////////////////////////
         default: begin
             $error("opcode error %h", opcode);
